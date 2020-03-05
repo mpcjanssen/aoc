@@ -22,7 +22,7 @@ proc sum {l} {tcl::mathop::+ {*}$l}
 proc neg {x} {return [expr {$x < 0}]}
 
 proc read-input {day} {
-   set f [open $::dir/../input/${day}.txt]
+   set f [open $::dir/../../input/${day}.txt]
    set d [read $f]
    close $f
    return $d
