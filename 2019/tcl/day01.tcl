@@ -6,8 +6,5 @@ set mass [read-input day01]
 
 proc fuel {mass} {expr {$mass / 3 - 2 }}
 
-set r1 [sum [lmap x $mass {fuel $x}]]
-set r2 [sum [lmap x $mass {sum [lrange [iterate-until fuel $x neg] 1 end] }]]
-
-puts "Part 1: $r1"
-puts "Part 2: $r2"
+proc part1 {} {return [sum [lmap x $::mass {fuel $x}]]}
+proc part2 {} {return [sum [lmap x $::mass {sum [lrange [iterate-until fuel $x neg] 1 end] }]]}

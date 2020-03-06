@@ -3,5 +3,7 @@ namespace import ::tcltest::*
 
 source day01.tcl
 
-test part1 {} -body {set r1} -result {3255932}
-test part2 {} -body {set r2} -result {4881041}
+test part1 {} -body {part1} -result {3255932}
+test part2 {} -body {part2} -result {4881041}
+
+cleanupTests

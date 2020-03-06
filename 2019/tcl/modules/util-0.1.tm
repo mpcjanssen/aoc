@@ -27,3 +27,12 @@ proc read-input {day} {
    close $f
    return $d
 }
+
+proc range {start end} {
+  set res {}
+  for {set i $start} {$i < $end+1} {incr i} {
+    lappend res $i
+  }
+  return $res
+}
+ 
