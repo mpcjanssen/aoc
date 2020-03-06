@@ -35,4 +35,20 @@ proc range {start end} {
   }
   return $res
 }
+
+proc manhattan {p} {
+    lassign $p x y
+    return [expr {abs($x)+abs($y)}]
+}
+
+proc lintersect { a b } {
+    set a [lsort $a]
+    set result {}
+    foreach element $b {
+        if { [lsearch -sorted -increasing $a $element] != -1 } {
+            lappend result $element
+        }
+    }
+    return $result
+}
  
