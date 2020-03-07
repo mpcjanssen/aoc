@@ -57,7 +57,11 @@ proc part1 {} {
     return [lindex [lsort -integer -index 0 [lmap x [lintersect [line $in2] [line $in1]] {list [manhattan $x] $x}]] 1 0]
 }
 
-
+proc part2 {} {
+    lassign [split $::data \n] in1 in2
+    set l1 [line $in1] ; set l2 [line $in2] ; set ints [lintersect $l1 $l2]
+    return [lindex [lsort -integer [lmap d [lmap p $ints {list [lsearch -exact $l1 $p]  [lsearch -exact $l2 $p]}] {sum $d}]] 1]
+}
 
 
 
