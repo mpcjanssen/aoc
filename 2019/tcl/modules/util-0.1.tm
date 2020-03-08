@@ -69,3 +69,13 @@ proc zoomcanvas {c sx sy pad} {
     $c create oval [expr {$x-$size}] [expr {$y-$size}]  [expr {$x+$size}] [expr {$y+$size}] -fill $color
 
 }
+
+proc lfilter {l pred} {
+  set res {}
+  foreach e $l {
+    if {[$pred $e]} {
+      lappend res $e
+    }
+  }
+  return $res
+} 
