@@ -51,4 +51,24 @@ proc lintersect { a b } {
     }
     return $result
 }
+
+proc zoomcanvas {c sx sy pad} {
+      lassign [$c bbox all] minx miny maxx maxy
+    puts $minx
+    puts $miny
+    puts $maxx
+    puts $maxy
+    set s [expr {abs(($sx-2.0*$pad)/($maxx-$minx))}]
+    set s2 [expr {abs(($sy-2.0*$pad)/($maxy-$miny))}]
+    if {$s2 < $s} {set s $s2}
+
+    $c move all [expr {-$minx}]  [expr {-$miny}]
+    $c scale all 0 0 $s $s
+    $c move all $pad $pad
+}
  
+ proc dot {c x y size color} {
+   set size [expr {$size/2.0}]
+    $c create oval [expr {$x-$size}] [expr {$y-$size}]  [expr {$x+$size}] [expr {$y+$size}] -fill $color
+
+}
