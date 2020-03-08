@@ -53,11 +53,8 @@ proc lintersect { a b } {
 }
 
 proc zoomcanvas {c sx sy pad} {
-      lassign [$c bbox all] minx miny maxx maxy
-    puts $minx
-    puts $miny
-    puts $maxx
-    puts $maxy
+    lassign [$c bbox all] minx miny maxx maxy
+
     set s [expr {abs(($sx-2.0*$pad)/($maxx-$minx))}]
     set s2 [expr {abs(($sy-2.0*$pad)/($maxy-$miny))}]
     if {$s2 < $s} {set s $s2}
