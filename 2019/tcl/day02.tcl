@@ -4,10 +4,12 @@ package require util
 package require intcode
 
 
-set program [split [string trim [read-input day02]] ,]
+set program  [read-input day02]
 
 proc runwithinput {program in1 in2} {
-    set machine [IntCode new [lreplace $program 1 2 $in1 $in2]]
+    set machine [IntCode new $program]
+    $machine setmem 1 $in1
+    $machine setmem 2 $in2
     $machine run
     return [$machine mem 0]
 } 

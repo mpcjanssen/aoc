@@ -1,7 +1,7 @@
 oo::class create IntCode {
   variable Mem PC Signal
   constructor {program} {
-    set Mem $program
+    set Mem [split [string trim $program] ,]
     set PC 0
     set Signal {}
   }
@@ -9,6 +9,11 @@ oo::class create IntCode {
   method mem {idx} {
     return [lindex $Mem $idx]
   }
+
+  method setmem {idx val} {
+    lset Mem $idx $val
+  }
+
   method step {} {
     set opcode [lindex $Mem $PC]
     set data [lrange $Mem $PC+1 end]
