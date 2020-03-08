@@ -54,7 +54,7 @@ proc addsegment {lineVar desc} {
 
 proc part1 {} {
     lassign [split $::data \n] in1 in2
-    return [lindex [lsort -integer -index 0 [lmap x [lintersect [line $in2] [line $in1]] {list [manhattan $x] $x}]] 1 0]
+    return [lindex [lsort -integer -index 0 [lmap x [lintersect [line $in2] [line $in1]] {list [manhattan $x] $x}]] 1]
 }
 
 proc part2 {} {
@@ -89,7 +89,7 @@ proc visualizeline {c input color name} {
         if {$::maxy < $y} {set ::maxy $y}
         lappend points {*}$current
     }
-    $c create line {*}$points -fill $color
+    $c create line {*}$points -fill $color -tags $name
 }
 
 proc visualize {} {
@@ -99,29 +99,33 @@ proc visualize {} {
     set ::maxy 0
     
     package require Tk
+    wm geometry . 800x800
     destroy .c
     canvas .c
+    after idle {pack .c -expand 1 -fill both}
 
     lassign [split $::data \n] in1 in2
     visualizeline .c $in1 red in1
     visualizeline .c $in2 green in2
 
-    set s [expr {abs(300.0/($::maxx-$::minx))}]
-    set s2 [expr {abs(300.0/($::maxy-$::miny))}]
+    set s [expr {abs(780.0/($::maxx-$::minx))}]
+    set s2 [expr {abs(780.0/($::maxy-$::miny))}]
     puts $::minx
     puts $::miny
     puts $::maxx
     puts $::maxy
     if {$s2 < $s} {set s $s2}
     set size [expr {5/$s}]
+    puts $size
     .c create oval -$size -$size $size $size -fill red
     .c move all [expr {-$::minx}]  [expr {-$::miny}]
-    .c scale all 0 0 $s $s2
-
+    .c scale all 0 0 $s $s
     .c move all [expr {10}]  [expr {10}]
-    grid .c -sticky nsew 
+    .c configure -scrollregion [.c bbox all]
 
 }
+
+visualize
 
 
 
