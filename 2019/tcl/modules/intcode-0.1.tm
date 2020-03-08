@@ -15,7 +15,11 @@ oo::class create IntCode {
   }
 
   method getval {param mode} {
-    return $param
+    switch -exact $mode {
+      0 {return [my mem $param]}
+      1 {return $param}
+      default {error "Unknown mode $mode"}
+    }
   }
 
   method step {} {
@@ -30,15 +34,11 @@ oo::class create IntCode {
     # puts "executing $opcode"
     switch -exact $opcode {
       1 {
-        set x [lindex $Mem $val1]
-        set y [lindex $Mem $val2]
-        lset Mem $param3 [expr {$x+$y}]
+        my setmem $param3 [expr {$val1+$val2}]
         incr PC 4
       }
       2 {
-        set x [lindex $Mem $val1]
-        set y [lindex $Mem $val2]
-        lset Mem $param3 [expr {$x*$y}]
+        my setmem $param3 [expr {$val1*$val2}]
         incr PC 4
       }
       99 {set Signal stopped}
