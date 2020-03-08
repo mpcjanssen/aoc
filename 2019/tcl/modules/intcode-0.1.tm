@@ -26,7 +26,7 @@ oo::class create IntCode {
     set inst [format "%05d" [lindex $Mem $PC]]
     set opcode [format %d [string range $inst end-1 end]]
     set mode [string range $inst 0 2]
-    lassign [split $mode {}] mode1 mode2 mode3
+    lassign [split $mode {}] mode3 mode2 mode1
     lassign [lrange $Mem $PC+1 end] param1 param2 param3
     set val1 [my getval $param1 $mode1]
     set val2 [my getval $param2 $mode2]
