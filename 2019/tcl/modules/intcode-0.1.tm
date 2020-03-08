@@ -14,23 +14,31 @@ oo::class create IntCode {
     lset Mem $idx $val
   }
 
+  method getval {param mode} {
+    return $param
+  }
+
   method step {} {
-    set opcode [lindex $Mem $PC]
-    set data [lrange $Mem $PC+1 end]
+    set inst [format "%05d" [lindex $Mem $PC]]
+    set opcode [format %d [string range $inst end-1 end]]
+    set mode [string range $inst 0 2]
+    lassign [split $mode {}] mode1 mode2 mode3
+    lassign [lrange $Mem $PC+1 end] param1 param2 param3
+    set val1 [my getval $param1 $mode1]
+    set val2 [my getval $param2 $mode2]
+    set val3 [my getval $param3 $mode3]
     # puts "executing $opcode"
     switch -exact $opcode {
       1 {
-        lassign $data xpos ypos to
-        set x [lindex $Mem $xpos]
-        set y [lindex $Mem $ypos]
-        lset Mem $to [expr {$x+$y}]
+        set x [lindex $Mem $val1]
+        set y [lindex $Mem $val2]
+        lset Mem $param3 [expr {$x+$y}]
         incr PC 4
       }
       2 {
-        lassign $data xpos ypos to
-        set x [lindex $Mem $xpos]
-        set y [lindex $Mem $ypos]
-        lset Mem $to [expr {$x*$y}]
+        set x [lindex $Mem $val1]
+        set y [lindex $Mem $val2]
+        lset Mem $param3 [expr {$x*$y}]
         incr PC 4
       }
       99 {set Signal stopped}
