@@ -1,5 +1,6 @@
 lappend auto_path [file dirname [info script]]/lib
 tcl::tm::path add [file dirname [info script]]/modules
+package forget util
 package require util
 
 foreach l [read-input day06] {
@@ -25,4 +26,6 @@ proc part1 {} {
     return [sum $lengths]
 }
 
-proc part2 {} {}
+proc part2 {} {
+    return [llength [ldifference [orbpath SAN] [orbpath YOU]]]
+}

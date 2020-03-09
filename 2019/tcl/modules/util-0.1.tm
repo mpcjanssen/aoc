@@ -52,6 +52,27 @@ proc lintersect { a b } {
     return $result
 }
 
+ proc ldifference {a b} {
+        if {[llength $a] == 0} {
+            set ret $b
+        } elseif {[llength $b] == 0} {
+            set ret $a
+        } else {
+            foreach key $a {set ary($key) ""}
+            set ret {}  
+            foreach key $b {
+                if {[info exist ary($key)]} {
+                    unset ary($key)
+                } {
+                    lappend ret $key
+                }
+            }
+            foreach key [array names ary] {lappend ret $key}
+            # AK ?speed: eval lappend ret [array names ary]
+        }
+        set ret
+    }
+
 proc zoomcanvas {c sx sy pad} {
     lassign [$c bbox all] minx miny maxx maxy
 
