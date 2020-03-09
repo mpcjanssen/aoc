@@ -16,3 +16,11 @@ proc part1 {} {
     $machine run
     return [list [$machine state] [$machine outputs]]
 }
+
+proc part2 {} {
+    set program [read-input day05]
+    set machine [IntCode new $program]
+    $machine input 5
+    $machine run
+    return [list [$machine state] [$machine outputs]]
+}

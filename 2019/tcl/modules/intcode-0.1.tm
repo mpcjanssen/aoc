@@ -37,7 +37,7 @@ oo::class create IntCode {
 
   method step {} {
     set inst [format "%05d" [lindex $Mem $PC]]
-    set opcode [format %d [string range $inst end-1 end]]
+    set opcode [scan [string range $inst end-1 end]  %d]
     set mode [string range $inst 0 2]
     lassign [split $mode {}] mode3 mode2 mode1
     lassign [lrange $Mem $PC+1 end] param1 param2 param3
@@ -66,6 +66,36 @@ oo::class create IntCode {
       4 {
         lappend Outputs $val1
         incr PC 2
+      }
+      5 {
+        if {$val1} {
+          set PC $val2
+        } {
+          incr PC 3
+        }
+      }
+      6 {
+        if {!$val1} {
+          set PC $val2
+        } {
+          incr PC 3
+        }
+      }
+      7 {
+        if {$val1 < $val2} {
+          my setmem $param3 1
+        } {
+          my setmem $param3 0
+        }
+        incr PC 4
+      }
+      8 {
+        if {$val1 == $val2} {
+          my setmem $param3 1
+        } {
+          my setmem $param3 0
+        }
+        incr PC 4
       }
       99 {
         set State stopped
