@@ -43,7 +43,6 @@ oo::class create IntCode {
     lassign [lrange $Mem $PC+1 end] param1 param2 param3
     set val1 [my getval $param1 $mode1]
     set val2 [my getval $param2 $mode2]
-    set val3 [my getval $param3 $mode3]
     # puts "executing $opcode"
     switch -exact $opcode {
       1 {

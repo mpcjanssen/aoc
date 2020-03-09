@@ -100,3 +100,42 @@ proc lfilter {l pred} {
   }
   return $res
 } 
+
+ # Return a list with all the permutations of elements in list 'items'.
+ #      
+ # Example: permutations {a b} > {{a b} {b a}}
+ proc permutations items {
+     set l [llength $items]
+     if {[llength $items] < 2} {
+        return $items
+     } else {
+        for {set j 0} {$j < $l} {incr j} {
+            foreach subcomb [permutations [lreplace $items $j $j]] {
+                lappend res [concat [lindex $items $j] $subcomb]
+            }
+        }
+        return $res
+     }
+ }
+     
+ # Like foreach but call 'body' for every permutation of the elements
+ # in the list 'items', setting the variable 'var' to the permutation.
+ #   
+ # Example: foreach-permutation x {a b} {puts $x}
+ # Will output:
+ # a b          
+ # b a
+ proc foreach-permutation {var items body} {
+     set l [llength $items]
+     if {$l < 2} {
+        uplevel [list set $var [lrange $items 0 0]]
+        uplevel $body
+     } else {
+        for {set j 0} {$j < $l} {incr j} {
+            foreach-permutation subcomb [lreplace $items $j $j] {
+                uplevel [list set $var [concat [lrange $items $j $j] $subcomb]]
+                uplevel $body
+            }
+        }
+     }
+ }
