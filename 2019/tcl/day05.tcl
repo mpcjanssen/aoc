@@ -9,3 +9,10 @@ proc ex1 {} {
     return [$machine mem 4]
 }
 
+proc part1 {} {
+    set program [read-input day05]
+    set machine [IntCode new $program]
+    $machine input 1
+    $machine run
+    return [list [$machine state] [$machine outputs]]
+}

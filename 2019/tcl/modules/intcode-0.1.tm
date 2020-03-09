@@ -1,9 +1,22 @@
 oo::class create IntCode {
-  variable Mem PC Signal
+  variable Mem PC State Inputs Outputs
   constructor {program} {
     set Mem [split [string trim $program] ,]
     set PC 0
-    set Signal {}
+    set Inputs {}
+    set Outputs {}
+    set State idle
+  }
+
+  method input {in} {
+    lappend Inputs $in
+    if {$State eq "input-pending"} {
+      set State running
+    }
+  }
+
+  method outputs {} {
+    return $Outputs
   }
 
   method mem {idx} {
@@ -41,7 +54,22 @@ oo::class create IntCode {
         my setmem $param3 [expr {$val1*$val2}]
         incr PC 4
       }
-      99 {set Signal stopped}
+      3 {
+        if {[llength $Inputs] == 0} {
+          set State input-pending
+        } else {
+          set Inputs [lassign $Inputs in]
+          my setmem $param1 $in
+          incr PC 2
+        }
+      }
+      4 {
+        lappend Outputs $val1
+        incr PC 2
+      }
+      99 {
+        set State stopped
+      }
       default {
         error "Unknown opcode $opcode"
       }
@@ -49,10 +77,15 @@ oo::class create IntCode {
     }
   }
   method run {} {
-    while {$Signal ne "stopped"} {
+    set State running
+    while {$State eq "running"} {
       my step
     }
+  }
+  method state {} {
+    return $State
   }
 }
 
 
+ 
