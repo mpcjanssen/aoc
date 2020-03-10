@@ -164,3 +164,11 @@ proc _every {ms cmd} {
           after $ms [list after idle [namespace code [info level 0]]]
         }
 }
+
+proc getdef {dict idx def} {
+  if {[dict exists $dict $idx]} {
+    return [dict get $dict $idx]
+  } {
+    return $def
+  }
+}
