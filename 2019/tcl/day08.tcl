@@ -52,3 +52,7 @@ proc visualize {} {
 proc part2 {} {
   return YEHEF
 }
+
+if {$::argv0 eq [info script]} {
+  visualize
+}

@@ -113,7 +113,9 @@ proc visualize {} {
     zoomcanvas .c $sx $sy $pad
 }
 
-
+if {$::argv0 eq [info script]} {
+  visualize
+}
 
 
 
