@@ -152,3 +152,15 @@ proc freq {s} {
     }
     return $freqs
 }
+
+proc every {ms cmd} {
+  coroutine $cmd-co $cmd
+  _every 200 $cmd-co
+}
+
+proc _every {ms cmd} {
+        set res [{*}$cmd]
+        if {$res} {
+          after $ms [list after idle [namespace code [info level 0]]]
+        }
+}
