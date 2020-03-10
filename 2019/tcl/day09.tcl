@@ -27,5 +27,9 @@ proc part1 {} {
 }
 
 proc part2 {} {
-
+    set program [read-input day09]
+    set machine [IntCode new $program]
+    $machine input 2
+    $machine run
+    return [list [$machine state] [$machine outputs]]
 }
