@@ -4,14 +4,6 @@ package require util
 
 set input [range 231832 767346]
 
-proc freq {s} {
-    set freqs {}
-    foreach d [split $s {}] {
-        dict incr freqs $d 
-    }
-    return [dict values $freqs]
-}
-
 proc increasingdigits {x} {
     set l [split $x {}]
     return [expr {[lsort -integer $l] eq $l}]
@@ -37,7 +29,7 @@ proc part1 {} {
 proc part2 {} {
     set candidates {}
     foreach x $::p1candidates {
-        if {[lsearch [freq $x] 2] != -1} {
+        if {[lsearch [dict values [freq $x]] 2] != -1} {
             lappend candidates $x
         }
     }

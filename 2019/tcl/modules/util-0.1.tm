@@ -90,6 +90,11 @@ proc zoomcanvas {c sx sy pad} {
     $c create oval [expr {$x-$size}] [expr {$y-$size}]  [expr {$x+$size}] [expr {$y+$size}] -fill $color
 
 }
+ proc square {c x y size color} {
+   set size [expr {$size/2.0}]
+    $c create rectangle [expr {$x-$size}] [expr {$y-$size}]  [expr {$x+$size}] [expr {$y+$size}] -fill $color
+
+}
 
 proc lfilter {l pred} {
   set res {}
@@ -139,3 +144,11 @@ proc lfilter {l pred} {
         }
      }
  }
+
+proc freq {s} {
+    set freqs {}
+    foreach d [split $s {}] {
+        dict incr freqs $d 
+    }
+    return $freqs
+}
