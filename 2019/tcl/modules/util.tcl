@@ -173,8 +173,6 @@ proc getdef {dict idx def} {
   }
 }
 
-proc svgrect {x y size} {
-    set x [expr {$x*$size}]
-    set y [expr {$y*$size}] 
-    return "<rect x=\"$x\" y = \"$y\" width=\"$size\" height=\"$size\" style=\"fill:rgb(0,0,0);stroke-width:0.2;stroke:rgb(255,255,255)\" />"
+proc svgpixel {x y  border} {
+    return "<rect x=\"$x\" y = \"$y\" width=\"1\" height=\"1\" style=\"fill:rgb(0,0,0);stroke-width:$border;stroke:rgb(255,255,255)\" />"
 }
