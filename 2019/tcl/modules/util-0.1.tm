@@ -155,7 +155,7 @@ proc freq {s} {
 
 proc every {ms cmd} {
   coroutine $cmd-co $cmd
-  _every 200 $cmd-co
+  _every $ms $cmd-co
 }
 
 proc _every {ms cmd} {
@@ -171,4 +171,8 @@ proc getdef {dict idx def} {
   } {
     return $def
   }
+}
+
+proc svgpixel {x y  border color} {
+    return "<rect id=\"rect-$x-$y\" x=\"$x\" y = \"$y\" width=\"1\" height=\"1\" style=\"fill:$color;stroke-width:$border;stroke:rgb(255,255,255)\" />"
 }
