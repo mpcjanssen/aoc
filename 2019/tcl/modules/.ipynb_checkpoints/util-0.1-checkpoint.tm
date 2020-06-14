@@ -173,6 +173,6 @@ proc getdef {dict idx def} {
   }
 }
 
-proc svgpixel {x y idprefix border color} {
-    return "<rect id=\"$idprefix-$x-$y\" x=\"$x\" y = \"$y\" width=\"1\" height=\"1\" style=\"fill:$color;stroke-width:$border;stroke:rgb(255,255,255)\" />"
+proc svgpixel {x y  border color} {
+    return "<rect id=\"rect-$x-$y\" x=\"$x\" y = \"$y\" width=\"1\" height=\"1\" style=\"fill:$color;stroke-width:$border;stroke:rgb(255,255,255)\" />"
 }
