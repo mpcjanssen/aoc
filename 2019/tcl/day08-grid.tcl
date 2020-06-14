@@ -49,7 +49,7 @@ proc visualize-step {} {
             }
         }
         # zoomcanvas .c 800 800 10
-        after idle {after 1 v}
+        update
         yield 1
     }
     yield 0
@@ -58,7 +58,7 @@ proc visualize-step {} {
 
 proc visualize {} {
     coroutine v visualize-step
-    v
+    while {[v]} {}
 }
 
 proc part2 {} {
