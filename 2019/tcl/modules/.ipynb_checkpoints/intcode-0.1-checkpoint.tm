@@ -1,12 +1,13 @@
 oo::class create IntCode {
   variable Mem PC Base State Inputs Outputs
   constructor {program} {
-    set Mem {} 
+    set Mem(0) 0 
     set idx 0
     foreach val [split [string trim $program] ,] {
-      dict set Mem $idx $val
+      set Mem($idx) $val
       incr idx
-    } 
+    }
+    # parray Mem
     set PC 0
     set Base 0
     set Inputs {}
@@ -26,48 +27,60 @@ oo::class create IntCode {
   }
 
   method mem {idx} {
-    return [getdef $Mem $idx 0]
+    if {[info exists Mem($idx)]} {
+        return $Mem($idx)
+      } else {
+        set Mem($idx) 0
+        return 0
+      }
   }
 
   method setmem {idx val} {
-    dict set Mem $idx $val
+    set Mem($idx) $val
   }
 
   method getval {param mode} {
     switch -exact $mode {
       0 -
-      2 {return [my mem [my getaddress $param $mode]]}
+      2 {return $Mem([my getaddress $param $mode])}
       1 {return $param}
       default {error "Unknown mode $mode"}
     }
   }
 
   method getaddress {param mode} {
-    switch -exact $mode {
-      0 {return $param}
-      2 {return  [expr {$param+$Base}]}
-      default {error "Unknown  address mode $mode"}
-    }
+    return [expr {$param + ($mode >> 1) * $Base } ]
   }
 
   method step {} {
-    set inst [format "%05d" [my mem $PC]]
-    set opcode [scan [string range $inst end-1 end]  %d]
-    set mode [string range $inst 0 2]
-    set param1 [my mem [expr {$PC+1}]]
-    set param2 [my mem [expr {$PC+2}]]
-    set param3 [my mem [expr {$PC+3}]]
-    lassign [split $mode {}] mode3 mode2 mode1
+    incr ::step
+    variable Mem
+
+    set inst $Mem($PC)
+    set opcode [expr {$inst % 100}]
+    set mode [expr {$Mem($PC)/100}]
+    # puts $inst:$opcode:$mode
+    set PC2 $PC
+    set param1 $Mem([incr PC2])  
+    set param2 $Mem([incr PC2])  
+    set param3 $Mem([incr PC2])
+    set mode1 [expr {$mode % 10}]
+    set mode2 [expr {$mode/10 % 10}]
+    set mode3 [expr {$mode/100}]
+    
+
     set val1 [my getval $param1 $mode1]
     set val2 [my getval $param2 $mode2]
     # puts "executing $opcode"
+    
+    
     switch -exact $opcode {
       1 {
-        my setmem [my getaddress $param3 $mode3] [expr {$val1+$val2}]
+        set Mem([my getaddress $param3 $mode3]) [expr {$val1+$val2}]
         incr PC 4
       }
       2 {
-        my setmem [my getaddress $param3 $mode3] [expr {$val1*$val2}]
+        set Mem([my getaddress $param3 $mode3]) [expr {$val1*$val2}]
         incr PC 4
       }
       3 {
@@ -75,7 +88,7 @@ oo::class create IntCode {
           set State input-pending
         } else {
           set Inputs [lassign $Inputs in]
-          my setmem [my getaddress $param1 $mode1] $in
+          set Mem([my getaddress $param1 $mode1]) $in
           incr PC 2
         }
       }
@@ -99,17 +112,17 @@ oo::class create IntCode {
       }
       7 {
         if {$val1 < $val2} {
-          my setmem  [my getaddress $param3 $mode3] 1
+          set Mem([my getaddress $param3 $mode3]) 1
         } {
-          my setmem  [my getaddress $param3 $mode3] 0
+          set Mem([my getaddress $param3 $mode3]) 0
         }
         incr PC 4
       }
       8 {
         if {$val1 == $val2} {
-          my setmem [my getaddress $param3 $mode3] 1
+          set Mem([my getaddress $param3 $mode3]) 1
         } {
-          my setmem [my getaddress $param3 $mode3] 0
+          set Mem([my getaddress $param3 $mode3]) 0
         }
         incr PC 4
       }
@@ -125,6 +138,7 @@ oo::class create IntCode {
       }
 
     }
+        
   }
   method run {} {
     set State running

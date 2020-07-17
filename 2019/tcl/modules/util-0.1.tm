@@ -1,5 +1,4 @@
-set dir [file normalize [file dirname [info script]]]
-
+set scriptdir [file dirname [info script]]
 proc iterate-until {f x px} { 
   set res {}
   while {![{*}$px $x]} {
@@ -22,7 +21,7 @@ proc sum {l} {tcl::mathop::+ {*}$l}
 proc neg {x} {return [expr {$x < 0}]}
 
 proc read-input {day} {
-   set f [open $::dir/../../input/${day}.txt]
+   set f [open $::scriptdir/../../input/${day}.txt]
    set d [read $f]
    close $f
    return $d
@@ -176,3 +175,5 @@ proc getdef {dict idx def} {
 proc svgpixel {x y idprefix border color} {
     return "<rect id=\"$idprefix-$x-$y\" x=\"$x\" y = \"$y\" width=\"1\" height=\"1\" style=\"fill:$color;stroke-width:$border;stroke:rgb(255,255,255)\" />"
 }
+
+proc timereturn {block} {uplevel 1 [list time [list set res $block]] ; uplevel 1 [list puts $res]}

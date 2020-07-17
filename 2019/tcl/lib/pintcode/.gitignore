@@ -1,0 +1,7 @@
+backup/
+*.dll
+*.ppu
+*.o
+*.so
+*.dylib
+lib/

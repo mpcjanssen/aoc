@@ -1,8 +1,9 @@
-lappend auto_path [file dirname [info script]]/lib
+lappend auto_path [file dirname [info script]]/lib {C:\Users\Mark\Src\site-tcl\libs-windows}
 tcl::tm::path add [file dirname [info script]]/modules
+package require profiler
+profiler::init
 package require util
 package require intcode
-
 
 set program  [read-input day02]
 
@@ -30,3 +31,4 @@ proc part2 {} {
     }
 }
 
+puts [time part2]
