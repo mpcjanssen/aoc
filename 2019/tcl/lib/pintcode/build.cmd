@@ -1,1 +1,1 @@
-fpc -Fufpctcl -O3   pintcode.lpr
+fpc -Fufpctcl -O3  -g pintcode.lpr

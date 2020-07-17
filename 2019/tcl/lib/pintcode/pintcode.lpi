@@ -24,16 +24,16 @@
     <RunParams>
       <local>
         <HostApplicationFilename Value="C:\Tcl\bin\tclsh.exe"/>
-        <CommandLineParams Value="test.tcl"/>
-        <WorkingDirectory Value="C:\Users\Mark\Sync\Notebooks\aoc\2019\tcl\lib\fpc-tcl"/>
+        <CommandLineParams Value="day05.test"/>
+        <WorkingDirectory Value="C:\Users\Mark\Sync\Notebooks\aoc\2019\tcl"/>
       </local>
       <FormatVersion Value="2"/>
       <Modes Count="1">
         <Mode0 Name="default">
           <local>
             <HostApplicationFilename Value="C:\Tcl\bin\tclsh.exe"/>
-            <CommandLineParams Value="test.tcl"/>
-            <WorkingDirectory Value="C:\Users\Mark\Sync\Notebooks\aoc\2019\tcl\lib\fpc-tcl"/>
+            <CommandLineParams Value="day05.test"/>
+            <WorkingDirectory Value="C:\Users\Mark\Sync\Notebooks\aoc\2019\tcl"/>
           </local>
         </Mode0>
       </Modes>

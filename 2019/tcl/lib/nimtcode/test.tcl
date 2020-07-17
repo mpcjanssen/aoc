@@ -37,9 +37,7 @@ proc part2 {} {
     }
 }
 puts here
-set v  [NimtCode $program]
-# set v  [NimtCode $program]
-puts xxx$v
+
 
 puts part1:\t[part1]
 puts ok

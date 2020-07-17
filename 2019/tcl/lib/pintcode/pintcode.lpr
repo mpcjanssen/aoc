@@ -3,6 +3,7 @@ library pintcode.lpr;
 
 {$mode objfpc}{$H+}
 {$packrecords C}
+{$TYPEDADDRESS ON}
 
 
 { Strings are UTF8 by default }
@@ -14,25 +15,26 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   SysUtils,
   ctypes,
   typinfo,
-  Generics.Collections,
+  gqueue,
   tcl;
 
 type
   TStates = (stIdle, stRunning, stInputPending, stStopped);
+  TIntList = specialize TQueue<Integer>;
   TModes = (modPos = 0, modImm = 1, modRel = 2);
-  TMemory =  specialize TDictionary<Integer,Integer>;
   TIntCode = object
   public
     PC, Base: integer;
-    Mem: TMemory;
     State: TStates;
+    Mem: array[0..1000] of integer;
+    Inputs: TIntList;
+    Outputs: TIntList;
     function SetMem(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint ;
+    function Input(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint ;
     function GetMem(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint ;
-    function GetAddress(param: Integer; mode: TModes): integer;
-    function GetValue(param: Integer; mode: TModes): integer;
+    function GetReg(idx: Integer; mode: TModes): integer;
   public
     constructor Init(initMem: String);
-    destructor Done();
     function Run(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint ;
   end;
   PIntCode = ^TIntCode;
@@ -50,41 +52,30 @@ var
     PC:=0;
     Base:=0;
     I:=0;
-    Mem := TMemory.Create;
+    Inputs:=TIntList.create;
+    Outputs:=TIntList.create;
     for Cell in initMem.Split(',') do begin
-      Mem.AddOrSetValue(I, StrToInt(Cell));
+      Mem[I] := StrToInt(Cell);
       I +=  1;
     end;
   end;
-  destructor TIntCode.Done();
-  begin
-        FreeAndNil(Mem);
-       // WriteLn('Destroy');
-  end;
 
-  function TIntCode.GetValue(param: Integer; mode : TModes): integer;
+
+  function TIntCode.GetReg(idx: Integer; mode : TModes): integer;
   begin
     Result:=0;
     case mode of
-         modPos, modRel: begin
-           Result := Mem[GetAddress(param,mode)];
+         modPos: begin
+           Result := Mem[Mem[idx]];
          end;
-         modImm: Result := param;
+         modRel: begin
+                 Result:= Mem[Mem[idx + base]]
+         end;
+         modImm: Result := Mem[idx];
     end;
   end;
 
-  function TIntCode.GetAddress(param: Integer; mode : TModes): integer;
-  begin
-    Result := 0;
-    case mode of
-         modPos: Exit(param);
-         modRel: Exit(param + base);
-         else begin
-           Write('Unknown address type: ');
-           WriteLn(mode);
-         end;
-    end;
-  end;
+
 
   function TIntCode.SetMem(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint ;
   var
@@ -100,9 +91,24 @@ var
        Tcl_GetLongFromObj(interp, objv[3], @val);
        //WriteLn(Format('Setting mem[%d] := %d', [idx,val]));
 
-       Mem[idx]:=val;
-       //Mem.TryGetData(idx,val);
-       //WriteLn(Format('%d', [val]));
+
+       Mem[idx] := val;
+       Result:=TCL_OK;
+  end;
+    function TIntCode.Input(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint ;
+  var
+    val: Integer;
+  begin
+       if objc <> 3 then
+       begin
+            Tcl_WrongNumArgs(interp, 2 , objv, 'value');
+            Exit(TCL_ERROR);
+       end;
+       Tcl_GetLongFromObj(interp, objv[2], @val);
+       //WriteLn(Format('Setting mem[%d] := %d', [idx,val]));
+
+
+       Inputs.Push(val);
        Result:=TCL_OK;
   end;
 
@@ -117,7 +123,7 @@ var
             Exit(TCL_ERROR);
        end;
        Tcl_GetLongFromObj(interp, objv[2], @idx);
-       val:=Mem[idx];
+       val := Mem[idx];
        Tcl_SetObjResult(interp,Tcl_NewIntObj(val));
        Result:=TCL_OK;
   end;
@@ -126,10 +132,10 @@ var
   var
      inst: Integer;
     opcode: Integer;
-    param1, param2,param3: Integer;
-    val1, val2: Integer;
+
     mode1,mode2,mode3: TModes;
     mode: Integer;
+
   begin
        if objc <> 2 then
        begin
@@ -137,45 +143,47 @@ var
             Exit(TCL_ERROR);
        end;
        State:=stRunning;
+       //WriteLn(Format('Start running PC: %d', [PC]));
        While State = stRunning do begin
              Inst:=Mem[PC];
-             Param1:=Mem[PC+1];
-             Param2:=Mem[PC+2];
-
-
-
              opcode:= inst mod 100;
              mode:= inst div 100;
              mode1:= TModes(mode mod 10);
              mode2:= TModes((mode div 10) mod 10);
              mode3:= TModes(mode div 100);
-             val1 := GetValue(param1,mode1);
-             val2 := GetValue(param2,mode2);
 
-             //WriteLn(Format('Got: Mem[%d] => %d(%d|%s=%d, %d|%s=%d, %d|%s)',
+
+             //WriteLn(Format('Got: Mem[%d] => %d(%d|%s, %d|%s, %d|%s)',
              //                     [PC,
              //                     opcode,
-             //                     Param1,
+             //                     GetReg(PC+1,mode1),
              //                     GetEnumName(TypeInfo(TModes), Ord(mode1)),
-             //                     val1,
-             //                     Param2,
+             //                     GetReg(PC+2,mode2),
              //                     GetEnumName(TypeInfo(TModes), Ord(mode2)),
-             //                     val2,
-             //                     Param3,
+             //                     GetReg(PC+3,mode3),
              //                     GetEnumName(TypeInfo(TModes), Ord(mode3))]));
              Case opcode of
               -1 : begin
                    WriteLn('Should never happen');
               end;
               1 : begin
-                    Param3:=Mem[PC+3];
-                   Mem[GetAddress(param3,mode3)]:=val1 + val2;
+                   Mem[GetReg(PC+3,modImm)]:=GetReg(PC+1,mode1) + GetReg(PC+2,mode2);
                    PC+=4;
               end;
               2 : begin
-                    Param3:=Mem[PC+3];
-                   Mem[GetAddress(param3,mode3)]:=val1 * val2;
+                   Mem[GetReg(PC+3,modImm)]:=GetReg(PC+1,mode1) * GetReg(PC+2,mode2);
                    PC+=4;
+              end;
+              3 : begin
+
+                    Mem[GetReg(PC+1,modImm)]:=Inputs.Front;
+                   Inputs.Pop();
+                   PC+=2;
+              end;
+              4 : begin
+
+                   Outputs.push(GetReg(PC+1,mode1));
+                   PC+=2;
               end;
               99 : State := stStopped;
          else
@@ -197,7 +205,7 @@ var
     //WriteLn('Disposing of machine');
     Machine := PIntCode(clientData);
 
-    Dispose(Machine,Done)
+    Dispose(Machine);
 
   end;
 
@@ -205,10 +213,9 @@ var
     objc: cint; objv: PPTcl_Obj): cint; cdecl;
   var
     SubCmd:  String;
-    Machine: TIntCode;
+    Machine: PIntCode;
   begin
-    //WriteLn(Format('Evaluating command for: %p',[clientData]));
-    Machine := TIntCode(clientData^);
+    Machine := PIntCode(clientData);
     if objc < 2 then
     begin
       Tcl_WrongNumArgs(interp, 1 , objv, 'subcmd');
@@ -216,17 +223,21 @@ var
     end;
     SubCmd := Tcl_GetString(objv[1]);
     case SubCmd of
+         'input':
+            begin
+               Exit(Machine^.Input(interp,objc,objv));
+            end;
          'setmem':
             begin
-               Exit(Machine.SetMem(interp,objc,objv));
+               Exit(Machine^.SetMem(interp,objc,objv));
             end;
          'mem':
             begin
-               Exit(Machine.GetMem(interp,objc,objv));
+               Exit(Machine^.GetMem(interp,objc,objv));
             end;
          'run':
             begin
-               Exit(Machine.Run(interp,objc,objv));
+               Exit(Machine^.Run(interp,objc,objv));
             end;
          else
            begin
@@ -239,14 +250,11 @@ var
     Result := TCL_OK;
   end;
 
-
-
   function PintCode_Cmd(clientData: ClientData; interp: PTcl_Interp;
     objc: cint; objv: PPTcl_Obj): cint; cdecl;
   var
     CmdName:  PChar;
     Machine: PIntCode;
-    Mem: TMemory;
   begin
     CmdName := PChar(Format('pintcode::%d',[Number]));
     //WriteLn('cmdname:' + CmdName);
@@ -255,8 +263,8 @@ var
       Tcl_WrongNumArgs(interp, 1, objv, 'mem');
       Exit(TCL_ERROR);
     end;
+    //WriteLn('mem:' + Tcl_GetString(objv[1]));
     Machine:=New(PIntCode,Init(Tcl_GetString(objv[1])));
-    //WriteLn(Format('Create command for: %p',[@Machine]));
     Tcl_CreateObjCommand(interp, CmdName, @Machine_Cmd,  Machine, @Machine_Del_Cmd) ;
     Number += 1;
     Tcl_SetObjResult(interp, Tcl_NewStringObj(PChar(CmdName),-1));
