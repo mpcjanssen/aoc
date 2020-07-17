@@ -22,7 +22,7 @@ type
   TStates = (stIdle, stRunning, stInputPending, stStopped);
   TIntList = specialize TQueue<Integer>;
   TModes = (modPos = 0, modImm = 1, modRel = 2);
-  TIntCode = object
+  TIntCode = class
   public
     PC, Base: integer;
     State: TStates;
@@ -34,7 +34,7 @@ type
     function GetMem(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint ;
     function GetReg(idx: Integer; mode: TModes): integer;
   public
-    constructor Init(initMem: String);
+    constructor Create(initMem: String);
     function Run(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint ;
   end;
   PIntCode = ^TIntCode;
@@ -42,7 +42,7 @@ type
 var
   Number: Integer;
 
-  constructor TIntCode.Init(initMem: String);
+  constructor TIntCode.Create(initMem: String);
   var
     I: Integer;
     Cell: String;
@@ -199,13 +199,13 @@ var
 
   procedure Machine_Del_Cmd(clientData: ClientData); cdecl;
   var
-    Machine: PIntCode;
+    Machine: TIntCode;
 
   begin
     //WriteLn('Disposing of machine');
-    Machine := PIntCode(clientData);
+    Machine := TIntCode(clientData);
 
-    Dispose(Machine);
+    FreeAndNil(Machine);
 
   end;
 
@@ -213,9 +213,9 @@ var
     objc: cint; objv: PPTcl_Obj): cint; cdecl;
   var
     SubCmd:  String;
-    Machine: PIntCode;
+    Machine: TIntCode;
   begin
-    Machine := PIntCode(clientData);
+    Machine := TIntCode(clientData);
     if objc < 2 then
     begin
       Tcl_WrongNumArgs(interp, 1 , objv, 'subcmd');
@@ -225,19 +225,19 @@ var
     case SubCmd of
          'input':
             begin
-               Exit(Machine^.Input(interp,objc,objv));
+               Exit(Machine.Input(interp,objc,objv));
             end;
          'setmem':
             begin
-               Exit(Machine^.SetMem(interp,objc,objv));
+               Exit(Machine.SetMem(interp,objc,objv));
             end;
          'mem':
             begin
-               Exit(Machine^.GetMem(interp,objc,objv));
+               Exit(Machine.GetMem(interp,objc,objv));
             end;
          'run':
             begin
-               Exit(Machine^.Run(interp,objc,objv));
+               Exit(Machine.Run(interp,objc,objv));
             end;
          else
            begin
@@ -254,7 +254,7 @@ var
     objc: cint; objv: PPTcl_Obj): cint; cdecl;
   var
     CmdName:  PChar;
-    Machine: PIntCode;
+    Machine: TIntCode;
   begin
     CmdName := PChar(Format('pintcode::%d',[Number]));
     //WriteLn('cmdname:' + CmdName);
@@ -264,7 +264,7 @@ var
       Exit(TCL_ERROR);
     end;
     //WriteLn('mem:' + Tcl_GetString(objv[1]));
-    Machine:=New(PIntCode,Init(Tcl_GetString(objv[1])));
+    Machine:=TIntcode.Create(Tcl_GetString(objv[1]));
     Tcl_CreateObjCommand(interp, CmdName, @Machine_Cmd,  Machine, @Machine_Del_Cmd) ;
     Number += 1;
     Tcl_SetObjResult(interp, Tcl_NewStringObj(PChar(CmdName),-1));
