@@ -30,6 +30,7 @@ type
     Inputs: TIntList;
     Outputs: TIntList;
     function SetMem(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint ;
+    function GetState(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint ;
     function Input(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint ;
     function GetMem(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint ;
     function GetReg(idx: Integer; mode: TModes): integer;
@@ -37,7 +38,6 @@ type
     constructor Create(initMem: String);
     function Run(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint ;
   end;
-  PIntCode = ^TIntCode;
 
 var
   Number: Integer;
@@ -75,7 +75,27 @@ var
     end;
   end;
 
+  function TIntCode.GetState(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint ;
+  var
+    idx: Integer;
+    val: Integer;
+  begin
+       if objc <> 2 then
+       begin
+            Tcl_WrongNumArgs(interp, 2 , objv, '');
+            Exit(TCL_ERROR);
+       end;
+       case State of
+            stIdle: Tcl_SetObjResult(interp,Tcl_NewStringObj('idle',-1));
+            stRunning: Tcl_SetObjResult(interp,Tcl_NewStringObj('running',-1));
+            stInputPending: Tcl_SetObjResult(interp,Tcl_NewStringObj('input-pending',-1));
+            stStopped: Tcl_SetObjResult(interp,Tcl_NewStringObj('stopped',-1));
+       //WriteLn(Format('Setting mem[%d] := %d', [idx,val]));
+       end;
 
+
+       Result:=TCL_OK;
+  end;
 
   function TIntCode.SetMem(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint ;
   var
@@ -238,6 +258,10 @@ var
          'run':
             begin
                Exit(Machine.Run(interp,objc,objv));
+            end;
+         'state':
+            begin
+               Exit(Machine.GetState(interp,objc,objv));
             end;
          else
            begin
