@@ -23,7 +23,6 @@ proc ex2 {} {
 
 proc part1 {} {
     set program [read-input day09]
-puts $program
     set machine [PintCode $program]
     $machine input 1
     $machine run
@@ -32,7 +31,6 @@ puts $program
 
 proc part2 {} {
     set program [read-input day09]
-puts $program
     set machine [PintCode $program]
     $machine input 2
     $machine run

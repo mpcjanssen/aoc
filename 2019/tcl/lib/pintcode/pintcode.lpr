@@ -14,19 +14,20 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   SysUtils,
   ctypes,
   typinfo,
-  gqueue,
+  Generics.Collections,
   tcl;
 
 type
   TStates = (stIdle, stRunning, stInputPending, stStopped);
-  TIntList = specialize TQueue<integer>;
+  TIntList = specialize TQueue<Int64>;
+  TMemory = specialize TDictionary<Int64,Int64>;
   TModes = (modPos = 0, modImm = 1, modRel = 2);
 
   TIntCode = class
   public
-    PC, Base: integer;
+    PC, Base: Int64;
     State: TStates;
-    Mem: array[-10000..10000] of integer;
+    Mem: TMemory;
     Inputs: TIntList;
     Outputs: TIntList;
     function SetMem(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint;
@@ -34,8 +35,8 @@ type
     function GetOutputs(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint;
     function Input(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint;
     function GetMem(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint;
-    function GetReg(idx: integer; mode: TModes): integer;
-    function GetVal(idx: integer; mode: TModes): integer;
+    function GetReg(idx: Int64; mode: TModes): Int64;
+    function GetVal(idx: Int64; mode: TModes): Int64;
   public
     constructor Create(initMem: string);
     destructor Destroy; override;
@@ -57,11 +58,11 @@ var
 
     Inputs := TIntList.Create;
     Outputs := TIntList.Create;
-    for i := Low(Mem) to High(Mem)  do Mem[i]:=0;
-        I := 0;
+    Mem := TMemory.Create;
+    I := 0;
     for Cell in initMem.Split(',') do
     begin
-      Mem[I] := StrToInt(Cell);
+      Mem.AddOrSetValue(I,StrToInt(Cell));
       I += 1;
     end;
   end;
@@ -73,24 +74,31 @@ var
   begin
     FreeAndNil(Outputs);
     FreeAndNil(Inputs);
+    FreeAndNil(Mem);
   end;
 
 
-  function TIntCode.GetReg(idx: integer; mode: TModes): integer;
+  function TIntCode.GetReg(idx: Int64; mode: TModes): Int64;
   begin
     Result := 0;
+
     case mode of
-      modPos: Result := Mem[idx];
-      modRel: Result:= Mem[idx] + Base;
+      modPos: Mem.TryGetValue(idx,Result);
+      modRel: begin
+        Mem.TryGetValue(idx,Result);
+        Result+= Base;
+        end;
+
       modImm: Result := idx;
       else WriteLn('Invalid mode: ', mode);
     end;
   end;
 
-  function TIntCode.GetVal(idx: integer; mode: TModes): integer;
+  function TIntCode.GetVal(idx: Int64; mode: TModes): Int64;
   begin
     //WriteLn('Getting val from ', GetReg(idx,mode));
-    Result:=Mem[GetReg(idx,mode)];
+    Result := 0;
+    Mem.TryGetValue(GetReg(idx,mode),Result);
   end;
 
   function TIntCode.GetState(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint;
@@ -118,6 +126,7 @@ var
 
   function TIntCode.GetOutputs(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint;
   var
+    item: Int64;
     l: PTcl_Obj;
   begin
     if objc <> 2 then
@@ -125,11 +134,12 @@ var
       Tcl_WrongNumArgs(interp, 2, objv, '');
       Exit(TCL_ERROR);
     end;
+    //WriteLn('Her');
     l := Tcl_NewListObj(0, nil);
-    while not Outputs.IsEmpty() do
+   for item in Outputs do
     begin
-      Tcl_ListObjAppendElement(interp, l, Tcl_NewIntObj(Outputs.Front()));
-      Outputs.pop;
+      //WriteLn(IntToStr(item));
+      Tcl_ListObjAppendElement(interp, l, Tcl_NewStringObj(PChar(IntToStr(item)),-1));
 
       //WriteLn(Format('Setting mem[%d] := %d', [idx,val]));
     end;
@@ -153,7 +163,7 @@ var
     //WriteLn('Setting mem[', idx, ']=',val);
 
 
-    Mem[idx] := val;
+    Mem.AddOrSetValue(idx, val);
     Result := TCL_OK;
   end;
 
@@ -170,14 +180,14 @@ var
 
 
 
-    Inputs.Push(val);
+    Inputs.Enqueue(val);
     Result := TCL_OK;
   end;
 
   function TIntCode.GetMem(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint;
   var
-    idx: integer;
-    val: integer;
+    idx: LongInt;
+    val: Int64;
   begin
     if objc <> 3 then
     begin
@@ -185,15 +195,16 @@ var
       Exit(TCL_ERROR);
     end;
     Tcl_GetLongFromObj(interp, objv[2], @idx);
-    val := Mem[idx];
-    Tcl_SetObjResult(interp, Tcl_NewIntObj(val));
+    val := 0;
+    Mem.TryGetValue(idx,val);
+    Tcl_SetObjResult(interp, Tcl_NewLongObj(val));
     Result := TCL_OK;
   end;
 
   function TIntCode.Run(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint;
   var
-    inst: integer;
-    opcode: integer;
+    inst: Int64;
+    opcode: Int64;
 
     mode1, mode2, mode3: TModes;
 
@@ -207,7 +218,8 @@ var
     //WriteLn(Format('Start running PC: %d', [PC]));
     while State = stRunning do
     begin
-      Inst := Mem[PC];
+      Inst := 0;
+      Mem.TryGetValue(PC,Inst);
       opcode := inst mod 100;
       mode1 := TModes((Inst div 100) mod 10);
       mode2 := TModes((Inst div 1000) mod 10);
@@ -230,30 +242,30 @@ var
         end;
         1:
         begin
-          Mem[GetReg(PC + 3, mode3)] := GetVal(PC + 1, mode1) + GetVal(PC + 2, mode2);
+          Mem.AddOrSetValue(GetReg(PC + 3, mode3), GetVal(PC + 1, mode1) + GetVal(PC + 2, mode2));
           PC += 4;
         end;
         2:
         begin
-          Mem[GetReg(PC + 3, mode3)] := GetVal(PC + 1, mode1) * GetVal(PC + 2, mode2);
+          //WriteLn(GetVal(PC + 1, mode1), '*', GetVal(PC + 2, mode2), '=', GetVal(PC + 1, mode1) * GetVal(PC + 2, mode2));
+           Mem.AddOrSetValue(GetReg(PC + 3, mode3), GetVal(PC + 1, mode1) * GetVal(PC + 2, mode2));
           PC += 4;
         end;
         3:
         begin
-          if Inputs.IsEmpty() then begin
+          if Inputs.Count = 0 then begin
             // WriteLn('Exhaused inputs: ');
             State := stInputPending;
           end
           else
           begin
-          Mem[GetReg(PC + 1, mode1)] := Inputs.Front;
-          Inputs.Pop();
+           Mem.AddOrSetValue(GetReg(PC + 1, mode1),Inputs.Dequeue);
           PC += 2;
           end;
         end;
         4:
         begin
-          Outputs.push(GetVal(PC + 1, mode1));
+          Outputs.Enqueue(GetVal(PC + 1, mode1));
           PC += 2;
         end;
         5:
@@ -289,11 +301,11 @@ var
 
           if GetVal(PC + 1, mode1) < GetVal(PC + 2, mode2) then
           begin
-            Mem[GetReg(PC + 3, mode3)] := 1;
+            Mem.AddOrSetValue(GetReg(PC + 3, mode3), 1);
           end
           else
           begin
-            Mem[GetReg(PC + 3, mode3)] := 0;
+            Mem.AddOrSetValue(GetReg(PC + 3, mode3) ,0);
 
           end;
           PC += 4;
@@ -304,19 +316,17 @@ var
 
           if GetVal(PC + 1, mode1) = GetVal(PC + 2, mode2) then
           begin
-            Mem[GetReg(PC + 3, mode3)] := 1;
-          end
-          else
-          begin
-            Mem[GetReg(PC + 3, mode3)] := 0;
-
-          end;
+              Mem.AddOrSetValue(GetReg(PC + 3, mode3), 1);
+            end
+            else
+            begin
+              Mem.AddOrSetValue(GetReg(PC + 3, mode3),0);
+            end;
           PC += 4;
 
         end;
         9:
         begin
-
           Base+= GetVal(PC + 1, mode1);
           PC += 2;
 
@@ -324,10 +334,11 @@ var
         99: State := stStopped;
         else
           Tcl_SetObjResult(interp,
-            Tcl_NewStringObj(PChar(Format('Invalid opcode: %d', [opcode])), -1));
+          Tcl_NewStringObj(PChar(Format('Invalid opcode: %d', [opcode])), -1));
           Exit(TCL_ERROR);
       end;
     end;
+    //WriteLn('State: ', State);
 
     Result := TCL_OK;
   end;
