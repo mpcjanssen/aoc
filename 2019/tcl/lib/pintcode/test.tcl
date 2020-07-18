@@ -40,7 +40,7 @@ set v  [PintCode $program]
 set w  [PintCode $program]
 puts zzz$v
 
-puts [time part1]
+puts [ part1]
 
-puts [time part2]
+puts [ part2]
 
