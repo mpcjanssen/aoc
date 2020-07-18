@@ -8,16 +8,15 @@
       <Unit0>
         <Filename Value="pintcode.lpr"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="pintcode.lpr"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="390"/>
-        <CursorPos X="5" Y="421"/>
-        <UsageCount Value="155"/>
+        <TopLine Value="66"/>
+        <CursorPos X="5" Y="92"/>
+        <UsageCount Value="163"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value=""/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit1>
       <Unit2>
@@ -25,291 +24,293 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="39"/>
         <CursorPos X="9" Y="54"/>
-        <UsageCount Value="50"/>
+        <UsageCount Value="49"/>
       </Unit2>
       <Unit3>
         <Filename Value="C:\lazarus\fpc\3.0.2\source\rtl\inc\ctypes.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="217"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit3>
       <Unit4>
         <Filename Value="C:\lazarus\fpc\3.0.2\source\rtl\inc\systemh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="516"/>
         <CursorPos X="3" Y="525"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit4>
       <Unit5>
         <Filename Value="stubfields.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="13"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit5>
       <Unit6>
         <Filename Value="stubtypes.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="408"/>
         <CursorPos X="111" Y="424"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit6>
       <Unit7>
         <Filename Value="stubvars.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="87"/>
         <CursorPos X="28" Y="97"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit7>
       <Unit8>
         <Filename Value="tclDeclStubs.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3185"/>
         <CursorPos X="121" Y="3201"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit8>
       <Unit9>
-        <Filename Value="stubinit.inc"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="33"/>
-        <UsageCount Value="1"/>
-      </Unit9>
-      <Unit10>
         <Filename Value="tcltypes.inc"/>
         <CustomData Count="1">
           <Item0 Name="IDEDirectives" Value="{%RunCommand tclsh testsample.tcl}"/>
         </CustomData>
         <EditorIndex Value="-1"/>
         <CursorPos Y="5"/>
-        <UsageCount Value="5"/>
-      </Unit10>
-      <Unit11>
+        <UsageCount Value="4"/>
+      </Unit9>
+      <Unit10>
         <Filename Value="fpctcl\stubvars.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="556"/>
         <CursorPos X="16" Y="38"/>
-        <UsageCount Value="51"/>
-      </Unit11>
-      <Unit12>
+        <UsageCount Value="50"/>
+      </Unit10>
+      <Unit11>
         <Filename Value="fpctcl\stubtypes.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="536"/>
         <CursorPos X="99" Y="552"/>
-        <UsageCount Value="51"/>
-      </Unit12>
-      <Unit13>
+        <UsageCount Value="50"/>
+      </Unit11>
+      <Unit12>
         <Filename Value="fpctcl\tcl.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="45"/>
-      </Unit13>
-      <Unit14>
+        <UsageCount Value="44"/>
+      </Unit12>
+      <Unit13>
         <Filename Value="fpctcl\tcltypes.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="97"/>
         <CursorPos Y="106"/>
-        <UsageCount Value="29"/>
-      </Unit14>
-      <Unit15>
+        <UsageCount Value="28"/>
+      </Unit13>
+      <Unit14>
         <Filename Value="fpctcl\tclconsts.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="18"/>
         <CursorPos Y="10"/>
-        <UsageCount Value="2"/>
-      </Unit15>
-      <Unit16>
+        <UsageCount Value="1"/>
+      </Unit14>
+      <Unit15>
         <Filename Value="C:\lazarus\fpc\3.0.2\source\rtl\objpas\sysutils\syspchh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="17"/>
         <CursorPos X="10" Y="38"/>
-        <UsageCount Value="3"/>
-      </Unit16>
-      <Unit17>
+        <UsageCount Value="2"/>
+      </Unit15>
+      <Unit16>
         <Filename Value="C:\lazarus\fpc\3.0.2\source\rtl\objpas\sysutils\syspch.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="49"/>
         <CursorPos X="3" Y="35"/>
-        <UsageCount Value="3"/>
-      </Unit17>
-      <Unit18>
+        <UsageCount Value="2"/>
+      </Unit16>
+      <Unit17>
         <Filename Value="C:\lazarus\fpc\3.0.2\source\rtl\inc\strings.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="82"/>
-        <UsageCount Value="2"/>
-      </Unit18>
-      <Unit19>
+        <UsageCount Value="1"/>
+      </Unit17>
+      <Unit18>
         <Filename Value="C:\lazarus\fpc\3.0.2\source\rtl\objpas\sysutils\sysstrh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="117"/>
         <CursorPos X="10" Y="128"/>
-        <UsageCount Value="2"/>
-      </Unit19>
-      <Unit20>
+        <UsageCount Value="1"/>
+      </Unit18>
+      <Unit19>
         <Filename Value="C:\lazarus\components\lazutils\fileutil.pas"/>
         <UnitName Value="FileUtil"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="2"/>
-      </Unit20>
-      <Unit21>
+        <UsageCount Value="1"/>
+      </Unit19>
+      <Unit20>
         <Filename Value="C:\lazarus\components\lazutils\lazfileutils.pas"/>
         <UnitName Value="LazFileUtils"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="2"/>
-      </Unit21>
-      <Unit22>
+        <UsageCount Value="1"/>
+      </Unit20>
+      <Unit21>
         <Filename Value="..\..\..\..\..\..\..\scoop\apps\lazarus\current\fpc\3.2.0\source\packages\rtl-generics\src\inc\generics.dictionariesh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="598"/>
         <CursorPos X="44" Y="614"/>
-        <UsageCount Value="56"/>
-      </Unit22>
-      <Unit23>
+        <UsageCount Value="55"/>
+      </Unit21>
+      <Unit22>
         <Filename Value="..\..\..\..\..\..\..\scoop\apps\lazarus\current\fpc\3.2.0\source\rtl\objpas\fgl.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="225"/>
         <CursorPos X="18" Y="241"/>
-        <UsageCount Value="50"/>
-      </Unit23>
-      <Unit24>
+        <UsageCount Value="49"/>
+      </Unit22>
+      <Unit23>
         <Filename Value="..\..\..\..\..\..\..\scoop\apps\lazarus\current\fpc\3.2.0\source\packages\fcl-stl\src\gqueue.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="5"/>
         <CursorPos X="41" Y="44"/>
-        <UsageCount Value="28"/>
-      </Unit24>
-      <Unit25>
+        <UsageCount Value="27"/>
+      </Unit23>
+      <Unit24>
         <Filename Value="..\..\modules\intcode-0.1.tm"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="94"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="13"/>
         <DefaultSyntaxHighlighter Value="None"/>
-      </Unit25>
-      <Unit26>
+      </Unit24>
+      <Unit25>
         <Filename Value="..\..\day05.tcl"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="2" Y="26"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="None"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="..\..\..\..\..\..\..\scoop\apps\lazarus\current\fpc\3.2.0\source\rtl\inc\objpash.inc"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="190"/>
+        <CursorPos X="23" Y="206"/>
+        <UsageCount Value="14"/>
+        <Loaded Value="True"/>
       </Unit26>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="264" Column="32" TopLine="239"/>
+        <Caret Line="89" Column="19" TopLine="74"/>
       </Position1>
       <Position2>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="33" Column="14" TopLine="17"/>
+        <Caret Line="38" Column="20" TopLine="29"/>
       </Position2>
       <Position3>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="145" TopLine="114"/>
+        <Caret Line="222" TopLine="206"/>
       </Position3>
       <Position4>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="33" Column="14" TopLine="17"/>
+        <Caret Line="229" TopLine="222"/>
       </Position4>
       <Position5>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="128" Column="45" TopLine="104"/>
+        <Caret Line="71" TopLine="60"/>
       </Position5>
       <Position6>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="112" Column="54" TopLine="112"/>
+        <Caret Line="215" TopLine="203"/>
       </Position6>
       <Position7>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="268" Column="39" TopLine="92"/>
+        <Caret Line="3" Column="20"/>
       </Position7>
       <Position8>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="34" Column="24" TopLine="60"/>
+        <Caret Line="207" Column="95" TopLine="200"/>
       </Position8>
       <Position9>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="113" Column="6" TopLine="90"/>
+        <Caret Line="214" Column="38" TopLine="199"/>
       </Position9>
       <Position10>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="111" Column="20" TopLine="95"/>
+        <Caret Line="3" Column="26"/>
       </Position10>
       <Position11>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="118" Column="32" TopLine="96"/>
+        <Caret Line="235" TopLine="220"/>
       </Position11>
       <Position12>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="244" Column="46" TopLine="219"/>
+        <Caret Line="409" Column="28" TopLine="387"/>
       </Position12>
       <Position13>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="243" Column="23" TopLine="228"/>
+        <Caret Line="40" Column="17" TopLine="24"/>
       </Position13>
       <Position14>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="244" Column="26" TopLine="229"/>
+        <Caret Line="247" TopLine="233"/>
       </Position14>
       <Position15>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="280" Column="54" TopLine="250"/>
+        <Caret Line="55" TopLine="39"/>
       </Position15>
       <Position16>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="265" Column="19" TopLine="250"/>
+        <Caret Line="84" Column="28" TopLine="66"/>
       </Position16>
       <Position17>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="262" Column="47" TopLine="202"/>
+        <Caret Line="250" Column="43" TopLine="234"/>
       </Position17>
       <Position18>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="206" TopLine="197"/>
+        <Caret Line="247" Column="48" TopLine="232"/>
       </Position18>
       <Position19>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="223" TopLine="198"/>
+        <Caret Line="60" Column="52" TopLine="39"/>
       </Position19>
       <Position20>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="206" TopLine="198"/>
+        <Caret Line="68" Column="50" TopLine="44"/>
       </Position20>
       <Position21>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="218" TopLine="198"/>
+        <Caret Line="60" Column="113" TopLine="44"/>
       </Position21>
       <Position22>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="206" TopLine="198"/>
+        <Caret Line="55" TopLine="44"/>
       </Position22>
       <Position23>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="284" Column="50" TopLine="271"/>
+        <Caret Line="256" TopLine="241"/>
       </Position23>
       <Position24>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="89" Column="19" TopLine="74"/>
+        <Caret Line="55" TopLine="39"/>
       </Position24>
       <Position25>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="38" Column="20" TopLine="29"/>
+        <Caret Line="278" TopLine="268"/>
       </Position25>
       <Position26>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="222" TopLine="206"/>
+        <Caret Line="53" TopLine="39"/>
       </Position26>
       <Position27>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="229" TopLine="222"/>
+        <Caret Line="85" Column="59" TopLine="58"/>
       </Position27>
       <Position28>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="71" TopLine="60"/>
+        <Caret Line="112" Column="32" TopLine="86"/>
       </Position28>
       <Position29>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="215" TopLine="203"/>
+        <Caret Line="134" Column="32" TopLine="108"/>
       </Position29>
       <Position30>
         <Filename Value="pintcode.lpr"/>
-        <Caret Line="3" Column="20"/>
+        <Caret Line="34" Column="78" TopLine="30"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -324,53 +325,30 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="pintcode.lpr"/>
-        <Line Value="71"/>
+        <Line Value="73"/>
       </Item1>
       <Item2>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="pintcode.lpr"/>
-        <Line Value="237"/>
+        <Line Value="278"/>
       </Item2>
     </BreakPoints>
-    <Watches Count="11">
+    <Watches Count="4">
       <Item1>
-        <Expression Value="Mem[12]"/>
-        <DisplayStyle Value="wdfDecimal"/>
+        <Expression Value="initMem"/>
       </Item1>
       <Item2>
-        <Expression Value="Self"/>
-        <DisplayStyle Value="wdfPointer"/>
+        <Expression Value="mode1"/>
       </Item2>
       <Item3>
-        <Expression Value="Machine"/>
-        <DisplayStyle Value="wdfPointer"/>
+        <Expression Value="PC"/>
       </Item3>
-      <Item4 ClassAutoCast="True">
-        <Expression Value="Mem"/>
+      <Item4>
+        <Expression Value="PC+1"/>
+        <DisplayStyle Value="wdfDecimal"/>
       </Item4>
-      <Item5>
-        <Expression Value="param3"/>
-      </Item5>
-      <Item6>
-        <Expression Value="mode3"/>
-      </Item6>
-      <Item7>
-        <Expression Value="GetAddress(param3,mode3)"/>
-      </Item7>
-      <Item8>
-        <Expression Value="param"/>
-      </Item8>
-      <Item9>
-        <Expression Value="mode"/>
-      </Item9>
-      <Item10>
-        <Expression Value="TModes(0)"/>
-      </Item10>
-      <Item11>
-        <Expression Value="mode div 100"/>
-      </Item11>
     </Watches>
   </Debugging>
 </CONFIG>

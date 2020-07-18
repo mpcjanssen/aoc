@@ -1,6 +1,6 @@
 library pintcode;
 
-{$mode objfpc}{$H+}
+{$mode objfpc}{$H+} {$R+}
 {$packrecords C}
 {$TYPEDADDRESS ON}
 
@@ -26,7 +26,7 @@ type
   public
     PC, Base: integer;
     State: TStates;
-    Mem: array[0..1000] of integer;
+    Mem: array[-10000..10000] of integer;
     Inputs: TIntList;
     Outputs: TIntList;
     function SetMem(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint;
@@ -54,9 +54,11 @@ var
     //WriteLn('Initializing with: ' + initMem);
     PC := 0;
     Base := 0;
-    I := 0;
+
     Inputs := TIntList.Create;
     Outputs := TIntList.Create;
+    for i := Low(Mem) to High(Mem)  do Mem[i]:=0;
+        I := 0;
     for Cell in initMem.Split(',') do
     begin
       Mem[I] := StrToInt(Cell);
@@ -69,8 +71,8 @@ var
     I: integer;
     Cell: string;
   begin
-    //FreeAndNil(Outputs);
-    //FreeAndNil(Inputs);
+    FreeAndNil(Outputs);
+    FreeAndNil(Inputs);
   end;
 
 
@@ -78,21 +80,17 @@ var
   begin
     Result := 0;
     case mode of
-      modPos:
-      begin
-        Result := Mem[idx];
-      end;
-      modRel:
-      begin
-        Result := Mem[idx] + base;
-      end;
+      modPos: Result := Mem[idx];
+      modRel: Result:= Mem[idx] + Base;
       modImm: Result := idx;
+      else WriteLn('Invalid mode: ', mode);
     end;
   end;
 
   function TIntCode.GetVal(idx: integer; mode: TModes): integer;
   begin
-    Result := Mem[GetReg(idx, mode)];
+    //WriteLn('Getting val from ', GetReg(idx,mode));
+    Result:=Mem[GetReg(idx,mode)];
   end;
 
   function TIntCode.GetState(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint;
@@ -198,7 +196,6 @@ var
     opcode: integer;
 
     mode1, mode2, mode3: TModes;
-    mode: integer;
 
   begin
     if objc <> 2 then
@@ -212,10 +209,9 @@ var
     begin
       Inst := Mem[PC];
       opcode := inst mod 100;
-      mode := inst div 100;
-      mode1 := TModes(mode mod 10);
-      mode2 := TModes((mode div 10) mod 10);
-      mode3 := TModes(mode div 100);
+      mode1 := TModes((Inst div 100) mod 10);
+      mode2 := TModes((Inst div 1000) mod 10);
+      mode3 := TModes((Inst div 10000) mod 10);
 
 
       //WriteLn(Format('Got: Mem[%d] => %d(%d|%s, %d|%s, %d|%s)',
@@ -244,14 +240,19 @@ var
         end;
         3:
         begin
-
+          if Inputs.IsEmpty() then begin
+            // WriteLn('Exhaused inputs: ');
+            State := stInputPending;
+          end
+          else
+          begin
           Mem[GetReg(PC + 1, mode1)] := Inputs.Front;
           Inputs.Pop();
           PC += 2;
+          end;
         end;
         4:
         begin
-
           Outputs.push(GetVal(PC + 1, mode1));
           PC += 2;
         end;
@@ -311,6 +312,13 @@ var
 
           end;
           PC += 4;
+
+        end;
+        9:
+        begin
+
+          Base+= GetVal(PC + 1, mode1);
+          PC += 2;
 
         end;
         99: State := stStopped;
