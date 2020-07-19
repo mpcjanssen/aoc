@@ -110,8 +110,7 @@ var
     case State of
       stIdle: Tcl_SetObjResult(interp, Tcl_NewStringObj('idle', -1));
       stRunning: Tcl_SetObjResult(interp, Tcl_NewStringObj('running', -1));
-      stInputPending: Tcl_SetObjResult(interp, Tcl_NewStringObj(
-          'input-pending', -1));
+      stInputPending: Tcl_SetObjResult(interp, Tcl_NewStringObj('input-pending', -1));
       stStopped: Tcl_SetObjResult(interp, Tcl_NewStringObj('stopped', -1));
     end;
 
