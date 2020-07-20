@@ -1,14 +1,8 @@
+@file:JvmName("Day1")
 package nl.mpcjanssen.aoc2019
 
 import java.io.File
 
-
-class Day01 {
-    companion object {
-        fun part1(input: List<Long>) = input.map(::partFuel).sum()
-        fun part2(input: List<Long>) =  input.map(::totalFuel).sum()
-    }
-}
 
 fun partFuel(mass: Long) : Long = mass / 3 - 2
 fun totalFuel(mass: Long) : Long {
@@ -19,10 +13,13 @@ fun totalFuel(mass: Long) : Long {
     return s.drop(1).sum()
 }
 
+
 fun main() {
-    val input = File("day01.txt").readLines().map { it.toLong() }
-    println(input)
-    println("part1: " + Day01.part1(input))
-    println("part2: " + Day01.part2(input))
+    Day(1).run (
+        input = File("day01.txt").readLines().map { it.toLong() },
+        part1 = {it.map(::partFuel).sum()},
+        part2 = {it.map(::totalFuel).sum()}
+
+        )
 }
 
