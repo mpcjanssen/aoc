@@ -91,7 +91,7 @@ proc zoomcanvas {c sx sy pad} {
 }
  proc square {c x y size color} {
    set size [expr {$size/2.0}]
-    $c create rectangle [expr {$x-$size}] [expr {$y-$size}]  [expr {$x+$size}] [expr {$y+$size}] -fill $color -tags $x:$y 
+    $c create rectangle [expr {$x-$size}] [expr {$y-$size}]  [expr {$x+$size}] [expr {$y+$size}] -fill $color
 
 }
 

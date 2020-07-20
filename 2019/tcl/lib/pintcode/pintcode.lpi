@@ -24,16 +24,16 @@
     <RunParams>
       <local>
         <HostApplicationFilename Value="C:\Tcl\bin\tclsh.exe"/>
-        <CommandLineParams Value="day09.test"/>
-        <WorkingDirectory Value="C:\Users\Mark\Sync\Notebooks\aoc\2019\tcl"/>
+        <CommandLineParams Value="test.tcl"/>
+        <WorkingDirectory Value="C:\Users\Mark\Sync\Notebooks\aoc\2019\tcl\lib\fpc-tcl"/>
       </local>
       <FormatVersion Value="2"/>
       <Modes Count="1">
         <Mode0 Name="default">
           <local>
             <HostApplicationFilename Value="C:\Tcl\bin\tclsh.exe"/>
-            <CommandLineParams Value="day09.test"/>
-            <WorkingDirectory Value="C:\Users\Mark\Sync\Notebooks\aoc\2019\tcl"/>
+            <CommandLineParams Value="test.tcl"/>
+            <WorkingDirectory Value="C:\Users\Mark\Sync\Notebooks\aoc\2019\tcl\lib\fpc-tcl"/>
           </local>
         </Mode0>
       </Modes>
@@ -47,6 +47,7 @@
       <Unit0>
         <Filename Value="pintcode.lpr"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="pintcode.lpr"/>
       </Unit0>
     </Units>
   </ProjectOptions>

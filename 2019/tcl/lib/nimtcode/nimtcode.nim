@@ -9,37 +9,18 @@ type
   State = enum
     stIdle, stRunning, stInputPending, stStopped 
 
-  NimtCode = object
+  NimtCode = ref object of RootObj
     pc: int
     base: int
-    mem: array[3000,int]
+    mem: TableRef[int,int]
     state: State
 
-  PNimtCode = ptr NimtCode
+
+proc newNimtCode(mem: TableRef[int,int]) : NimtCode =
+  return NimtCode(pc: 0, mem: mem, state: stIdle, base: 0)
 
 
-proc newNimtCode(prog: seq[string]) : PNimtCode =
-  echo "xxxxxxxx " & $prog
-  var m: PNimtCode = cast[PNimtCode](alloc(sizeof NimtCode))
-  m.pc = 0
-  m.base = 0
-
-
-
-  
-  var idx = 0 
-  for item in prog:
-    echo item
-    m.mem[idx] = item.parseInt
-    idx.inc
-    echo "::::" & $idx
-  
-
-  return m
-  
-
-
-proc getAddress(machine: PNimtCode, param, mode: int) : int =
+proc getAddress(machine: NimtCode, param, mode: int) : int =
   case mode:
   of 0: 
     return param
@@ -48,10 +29,10 @@ proc getAddress(machine: PNimtCode, param, mode: int) : int =
   else:
     echo "Invalid getAddress mode: " & $mode
 
-proc getValue(machine: PNimtCode, param, mode:int) : int =
+proc getValue(machine: NimtCode, param, mode:int) : int =
   case mode:
   of 0: 
-    return machine.mem[machine.getAddress(param,mode)]
+    return machine.mem.getOrDefault(machine.getAddress(param,mode),0)
   of 1: 
     return param
   else:
@@ -59,12 +40,13 @@ proc getValue(machine: PNimtCode, param, mode:int) : int =
 
   return 0
 
-proc step(machine: PNimtCode) =
+proc step(machine: NimtCode) =
   let pc = machine.pc
-  let inst = machine.mem[pc]
-  let param1 = machine.mem[pc+1]
-  let param2 = machine.mem[pc+2]
-  let param3 = machine.mem[pc+3]
+  let inst = machine.mem.getOrDefault(pc,0)
+  # echo "~~~~~~~~~~~~" & $pc
+  let param1 = machine.mem.getOrDefault(pc+1,0)
+  let param2 = machine.mem.getOrDefault(pc+2,0)
+  let param3 = machine.mem.getOrDefault(pc+3,0)
   let opcode = inst mod 100
   let mode = inst div 100
   let mode1 = mode mod 10
@@ -87,42 +69,39 @@ proc step(machine: PNimtCode) =
 
   # echo fmt"Got mem[{pc}] => {opcode}({param1}|{mode1}={val1}, {param2}|{mode2}={val2}, {param3}|{mode3})"
 
-proc setMem(machine: PNimtCode, interp: Tcl.PInterp, objc: cint, objv: Tcl.PPObj): cint =
+proc setMem(machine: NimtCode, interp: Tcl.PInterp, objc: cint, objv: Tcl.PPObj): cint =
   if objc != 4:
     Tcl.WrongNumArgs(interp, 2, objv, "idx val")
     return Tcl.ERROR
   var idx = parseInt($(Tcl.GetString(objv[2])))
   var val = parseInt($(Tcl.GetString(objv[3])))
-  echo $val
   machine.mem[idx] = val
   return Tcl.OK
 
-proc getMem(machine: PNimtCode, interp: Tcl.PInterp, objc: cint, objv: Tcl.PPObj): cint =
+proc getMem(machine: NimtCode, interp: Tcl.PInterp, objc: cint, objv: Tcl.PPObj): cint =
   if objc != 3:
     Tcl.WrongNumArgs(interp, 2, objv, "idx")
     return Tcl.ERROR
   var idx = parseInt($(Tcl.GetString(objv[2])))
-  Tcl.SetObjResult(interp,Tcl.NewIntObj(machine.mem[idx]))
+  Tcl.SetObjResult(interp,Tcl.NewIntObj(machine.mem.getOrDefault(idx,0)))
 
   return Tcl.OK
 
-proc run(machine: PNimtCode, interp: Tcl.PInterp, objc: cint, objv: Tcl.PPObj): cint =
+proc run(machine: NimtCode, interp: Tcl.PInterp, objc: cint, objv: Tcl.PPObj): cint =
   if objc != 2:
     Tcl.WrongNumArgs(interp, 2, objv, nil)
     return Tcl.ERROR
-  echo machine.mem
+  # echo machine.mem
   machine.state = stRunning
-
   while machine.state == stRunning:
     machine.step
 
   return Tcl.OK
 
 proc NimtCodeInstance_Del(clientData: Tcl.TClientData) =
-  var m = cast[PNimtCode](clientData)
-  #echo m.repr
-  dealloc(m)
-  return
+  var m = cast[ptr NimtCode](clientData)[]
+  echo m.repr
+  GC_unref(m)
 
   
 
@@ -130,18 +109,19 @@ proc NimtCodeInstance_Cmd(clientData: Tcl.TClientData, interp: Tcl.PInterp, objc
   if objc < 2:
     Tcl.WrongNumArgs(interp, 1, objv, "subcmd")
     return Tcl.ERROR
-
   
-  var m = cast[PNimtCode](clientData)
-  # echo m.mem.repr  
+
+  var m = cast[ptr NimtCode](clientData)
+  # echo m.mem
+  # echo m.repr
   var subCmd = $Tcl.GetString(objv[1])
   case subCmd:
     of "setmem":
-      return m.setMem(interp, objc, objv)
+      return m[].setMem(interp, objc, objv)
     of "mem":
-      return m.getMem(interp,objc,objv)
+      return m[].getMem(interp,objc,objv)
     of "run":
-      return m.run(interp, objc, objv)
+      return m[].run(interp, objc, objv)
     else:
       Tcl.SetObjResult(interp, Tcl.NewStringObj("invalid subcommand " & subCmd, -1))
       return Tcl.ERROR
@@ -160,15 +140,20 @@ proc NimtCode_Cmd(clientData: Tcl.TClientData, interp: Tcl.PInterp, objc: cint, 
   
   # echo "_____" & $objc
   var progObj = Tcl.GetString(objv[1])
-  echo $progObj
+
   var prog = split($progObj, ',')
   # echo "+++++++++++" & $prog.len
   # echo cmdName
   # echo m.repr
+  var mem = newTable[int,int]()
+  for idx in 0..prog.len-1:
+    mem[idx] = prog[idx].parseInt
+  var m  = newNimtCode(mem)
+  GC_ref(m)
+  
 
-  var m  = newNimtCode(prog)
-  # echo m.repr
-  discard Tcl.CreateObjCommand(interp,  "test", NimtCodeInstance_Cmd, cast[Tcl.TClientData](m),NimtCodeInstance_Del)
+
+  discard Tcl.CreateObjCommand(interp,  "test", NimtCodeInstance_Cmd, cast[Tcl.TClientData] (addr m),NimtCodeInstance_Del)
   Tcl.SetObjResult(interp, Tcl.NewStringObj("test",-1))
   num.inc
   return Tcl.OK

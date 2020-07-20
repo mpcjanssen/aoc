@@ -1,10 +1,10 @@
 lappend auto_path [file dirname [info script]]/lib
-tcl::tm::path add [file dirname [info script]]/modules [file dirname [info script]]/lib/pintcode
+tcl::tm::path add [file dirname [info script]]/modules
 package forget util
 package require util
 package forget intcode
 catch {rename IntCode {}}
-package require pintcode
+package require intcode
 
 set program [read-input day07]
 
@@ -12,7 +12,7 @@ proc dosimul {phases} {
     set lastout 0
     set machines {}
     foreach ph $phases  {
-        set machine [PintCode $::program]
+        set machine [IntCode new $::program]
         $machine input $ph
         lappend machines $machine
     }

@@ -1,0 +1,4 @@
+ToolSet: w64 8.0 (local)@C:\Users\Mark\scoop\apps\msys2\2020-06-29\mingw64
+Options: 
+
+Options:

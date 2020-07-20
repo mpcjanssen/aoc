@@ -1,14 +1,14 @@
 lappend auto_path [file dirname [info script]]/lib {C:\Users\Mark\Src\site-tcl\libs-windows}
-tcl::tm::path add [file dirname [info script]]/modules [file dirname [info script]]/lib/pintcode
-package require profiler
-profiler::init
+tcl::tm::path add [file dirname [info script]]/modules [file dirname [info script]]/lib/cintcode
 package require util
-package require pintcode
+package require cintcode
 
 set program  [read-input day02]
+interp alias {} Machine {} CintCode 
 
 proc runwithinput {program in1 in2} {
-    set machine [PintCode $program]
+
+    set machine [Machine [split $program ,]]
     $machine setmem 1 $in1
     $machine setmem 2 $in2
     $machine run
@@ -31,4 +31,5 @@ proc part2 {} {
     }
 }
 
+puts [part2]
 puts [time part2]
