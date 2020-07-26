@@ -152,7 +152,7 @@ Tcl_WideInt * reg(machine* m, Tcl_WideInt idx, enum mode mode) {
 
     }
     if (m->max_idx < res ) {
-        fprintf(stderr,"Resizing to %d\n", res);
+//        fprintf(stderr,"Resizing from %d to %d\n", m->max_idx+1, res+100);
         m->mem = ckrealloc(m->mem,(res+100) * sizeof(Tcl_WideInt));
         for (int i = m->max_idx+1 ; i < res + 100 ; i++) {
             m->mem[i] = 0;

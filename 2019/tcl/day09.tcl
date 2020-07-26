@@ -13,7 +13,7 @@ proc ex1 {} {
 }
 
 proc ex2 {} {
-    set program 1102,34915192,34915192,7,4,7,99,
+    set program 1102,34915192,34915192,7,4,7,99
     set machine [CintCode [split $program ,]]
     $machine run
     return [list [$machine state] [$machine outputs]]
