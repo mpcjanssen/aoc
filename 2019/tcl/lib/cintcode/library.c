@@ -57,11 +57,15 @@ int CintCode_Inst_Cmd(ClientData cdata, Tcl_Interp * interp, int objc, Tcl_Obj *
 int Mem(Tcl_Interp * interp, machine *m, int objc, Tcl_Obj *const objv[]) {
     Tcl_WideInt loc;
     Tcl_WideInt res;
+    int ret = TCL_OK;
     if (objc != 3) {
         Tcl_WrongNumArgs(interp,2,objv,"idx");
         return TCL_ERROR;
     }
-    Tcl_GetWideIntFromObj(NULL,objv[2],&loc);
+    ret = Tcl_GetWideIntFromObj(NULL,objv[2],&loc);
+    if (ret != TCL_OK) {
+        return ret;
+    }
     res = *reg(m,loc,Imm);
     Tcl_SetObjResult(interp,Tcl_NewWideIntObj(res));
     return TCL_OK;
@@ -112,7 +116,13 @@ int SetMem(Tcl_Interp * interp, machine *m, int objc, Tcl_Obj *const objv[]) {
         return TCL_ERROR;
     }
     res = Tcl_GetWideIntFromObj(NULL,objv[2],&loc);
+    if (res!=TCL_OK) {
+        return res;
+    }
     res = Tcl_GetWideIntFromObj(NULL,objv[3],&value);
+    if (res!=TCL_OK) {
+        return res;
+    }
     *reg(m,loc,Imm) = value;
     return TCL_OK;
 }
@@ -160,12 +170,12 @@ int Run(Tcl_Interp *interp, machine *m, int objc, Tcl_Obj *const objv[]) {
         int count;
         Tcl_WideInt item;
 
-        Tcl_WideInt inst = (reg(m,m->PC,Imm))[0];
+        Tcl_WideInt inst = *reg(m,m->PC,Imm);
         int opcode = inst % 100;
         int mode1 = inst / 100 % 10;
         int mode2 = inst / 1000 % 10;
         int mode3 = inst / 10000 % 10;
-//        fprintf(stderr,"m[%d], inst: %d(%d %d|%d|%d)\n", m->PC, inst,opcode,mode1,mode2,mode3);
+        // fprintf(stderr,"m[%d], inst: %d(%d %d|%d|%d)\n", m->PC, inst,opcode,mode1,mode2,mode3);
         switch (opcode) {
             case 1:
                 val1 = *reg(m,m->PC+1,mode1);
@@ -256,6 +266,7 @@ void CintCode_Del_Cmd(ClientData cdata) {
 
 int CintCode_Cmd(ClientData cdata, Tcl_Interp * interp, int objc, Tcl_Obj * const objv[]) {
     int length;
+    int res;
     machine * m = ckalloc(sizeof(machine));
     Tcl_Obj ** items;
     Tcl_Obj * cmdName;
@@ -269,13 +280,18 @@ int CintCode_Cmd(ClientData cdata, Tcl_Interp * interp, int objc, Tcl_Obj * cons
     m->inputs = Tcl_NewListObj(0,NULL);
     m->outputs = Tcl_NewListObj(0,NULL);
     Tcl_IncrRefCount(m->inputs);
+    Tcl_IncrRefCount(m->outputs);
+
     m->PC = 0;
     m->state = Idle;
     m->base = 0;
     m->max_idx = length-1;
     m->mem = ckalloc(length * sizeof(Tcl_WideInt));
     for (int i =0 ; i < length ; i++) {
-        Tcl_GetWideIntFromObj(interp,items[i],&m->mem[i]);
+        res = Tcl_GetWideIntFromObj(interp,items[i],&m->mem[i]);
+        if (res!=TCL_OK) {
+            return res;
+        }
     }
     Tcl_Obj * numObj = Tcl_NewWideIntObj(num);
     cmdName = Tcl_NewStringObj("cintcode::",-1);

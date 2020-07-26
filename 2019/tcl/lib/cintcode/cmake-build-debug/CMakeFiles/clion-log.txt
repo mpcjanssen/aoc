@@ -1,4 +1,4 @@
-C:\Users\Mark\scoop\apps\jetbrains-toolbox\current\apps\CLion\ch-0\201.7846.88\bin\cmake\win\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" C:\Users\Mark\Src\aoc\2019\tcl\lib\cintcode
+C:\Users\Mark\scoop\apps\jetbrains-toolbox\current\apps\CLion\ch-0\201.7846.88\bin\cmake\win\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" C:\Users\Mark\Sync\Notebooks\aoc\2019\tcl\lib\cintcode
 -- Configuring done
 -- Generating done
--- Build files have been written to: C:/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-debug
+-- Build files have been written to: C:/Users/Mark/Sync/Notebooks/aoc/2019/tcl/lib/cintcode/cmake-build-debug

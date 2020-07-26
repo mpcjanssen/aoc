@@ -3,12 +3,12 @@ tcl::tm::path add [file dirname [info script]]/modules [file dirname [info scrip
 package require util
 package require cintcode
 
-set program  [read-input day02]
+set program  [split [read-input day02] ,]
 interp alias {} Machine {} CintCode 
 
 proc runwithinput {program in1 in2} {
 
-    set machine [Machine [split $program ,]]
+    set machine [Machine $::program]
     $machine setmem 1 $in1
     $machine setmem 2 $in2
     $machine run
@@ -31,5 +31,3 @@ proc part2 {} {
     }
 }
 
-puts [part2]
-puts [time part2]

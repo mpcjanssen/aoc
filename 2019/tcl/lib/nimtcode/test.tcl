@@ -2,7 +2,7 @@ tcl::tm::path add [file join [file dirname [info script]] .] {C:\Users\Mark\Sync
 package require nimtcode
 package require util
 
-set program  [read-input day02]
+set program   [read-input day02]
 
 proc runwithinput {program in1 in2} {
     set machine [IntCode new $program]
@@ -45,3 +45,4 @@ puts part1:\t[part1]
 puts ok
 
 puts [time part2]
+puts xxx

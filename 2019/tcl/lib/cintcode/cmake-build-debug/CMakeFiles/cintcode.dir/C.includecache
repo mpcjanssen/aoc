@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/library.c
+C:/Users/Mark/Sync/Notebooks/aoc/2019/tcl/lib/cintcode/library.c
 tcl.h
 -
 stdlib.h
@@ -14,9 +14,9 @@ stdlib.h
 assert.h
 -
 library.h
-C:/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/library.h
+C:/Users/Mark/Sync/Notebooks/aoc/2019/tcl/lib/cintcode/library.h
 
-C:/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/library.h
+C:/Users/Mark/Sync/Notebooks/aoc/2019/tcl/lib/cintcode/library.h
 tcl.h
 -
 
