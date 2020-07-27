@@ -20,7 +20,8 @@ int CintCode_Inst_Cmd(ClientData cdata, Tcl_Interp * interp, int objc, Tcl_Obj *
         MEM,
         INPUT,
         STATE,
-        OUTPUTS
+        OUTPUTS,
+        CLEAROUTPUTS
     };
     static CONST char *subcmds[] = {
             "run",
@@ -29,6 +30,7 @@ int CintCode_Inst_Cmd(ClientData cdata, Tcl_Interp * interp, int objc, Tcl_Obj *
             "input",
             "state",
             "outputs",
+            "clearoutputs",
             (char *) NULL
     };
     if (Tcl_GetIndexFromObj(interp, objv[1], subcmds, "subcmd", 0,
@@ -48,11 +50,25 @@ int CintCode_Inst_Cmd(ClientData cdata, Tcl_Interp * interp, int objc, Tcl_Obj *
             return State(interp,m,objc, objv);
         case OUTPUTS:
             return Outputs(interp,m,objc, objv);
+        case CLEAROUTPUTS:
+            return ClearOutputs(interp,m,objc,objv);
         default:
             Tcl_AppendResult(interp, "never has happened",NULL);
             return TCL_ERROR;
     }
 }
+
+int ClearOutputs(Tcl_Interp * interp, machine *m, int objc, Tcl_Obj *const objv[]) {
+    if (objc != 2) {
+        Tcl_WrongNumArgs(interp,2,objv,"");
+        return TCL_ERROR;
+    }
+    Tcl_DecrRefCount(m->outputs);
+    m->outputs = Tcl_NewListObj(0,NULL);
+    Tcl_IncrRefCount(m->outputs);
+    return TCL_OK;
+};
+
 
 int Mem(Tcl_Interp * interp, machine *m, int objc, Tcl_Obj *const objv[]) {
     Tcl_WideInt loc;
