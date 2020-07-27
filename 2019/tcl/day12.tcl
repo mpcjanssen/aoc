@@ -73,11 +73,59 @@ proc energy {moonVar} {
     return $total
 }
 
+proc step {moonVar} {
+    upvar $moonVar space
+    gravity space
+    velocity space 
+}
+
 proc part1 {} {
     init space
-    time {
-        gravity space
-        velocity space 
-    } 1000
+    time {step space} 1000
     energy space
 }
+
+
+
+
+proc visualize {} {
+    init space
+    
+    
+    set pad 10
+    set sx 800
+    set sy 800
+    package require Tk
+    wm geometry . ${sx}x${sy}
+    canvas .c
+    
+    label .l -textvariable  e
+    pack .c -expand 1 -fill both
+   
+
+    set dotsize 10
+    set cols {_ red blue orange green}
+    foreach id [range 1 4] {
+    	dot .c [expr {$space($id,x)+400}] [expr {$space($id,y)+400}] $dotsize [lindex $cols $id] id$id
+    }
+    set i 0
+    while {1} {
+	gravity space
+        foreach id [range 1 4] {
+    		.c move id$id $space($id,vx) $space($id,vy)
+    	}
+	velocity space
+	incr i
+	
+	set e [energy space]
+	if {$i == 1000} {puts $e}
+	after 30	
+        update
+    }
+
+}
+
+if {$::argv0 eq [info script]} {
+  visualize
+}
+

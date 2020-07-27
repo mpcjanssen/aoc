@@ -73,11 +73,43 @@ proc energy {moonVar} {
     return $total
 }
 
+proc step {moonVar} {
+    upvar $moonVar space
+    gravity space
+    velocity space 
+}
+
 proc part1 {} {
     init space
-    time {
-        gravity space
-        velocity space 
-    } 1000
+    time {step space} 1000
     energy space
 }
+
+
+
+
+proc visualize {} {
+    init space
+    
+    set pad 10
+    set sx 800
+    set sy 800
+    set dotsize 100
+    
+    package require Tk
+    canvas .c
+    pack .c -expand 1 -fill both
+    while {1} {
+        dot .c 0 0 $dotsize red
+        dot .c 248 0 $dotsize blue
+        dot .c 367 0 $dotsize orange
+        update idletasks
+        after 10
+    }
+
+}
+
+if {$::argv0 eq [info script]} {
+  visualize
+}
+

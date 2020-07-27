@@ -84,9 +84,9 @@ proc zoomcanvas {c sx sy pad} {
     $c move all $pad $pad
 }
  
- proc dot {c x y size color} {
+ proc dot {c x y size color {tags {}}} {
    set size [expr {$size/2.0}]
-    $c create oval [expr {$x-$size}] [expr {$y-$size}]  [expr {$x+$size}] [expr {$y+$size}] -fill $color
+    $c create oval [expr {$x-$size}] [expr {$y-$size}]  [expr {$x+$size}] [expr {$y+$size}] -fill $color -tags $tags
 
 }
  proc square {c x y size color} {
