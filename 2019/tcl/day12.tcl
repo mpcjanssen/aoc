@@ -10,21 +10,21 @@ proc init {moonVar} {
     set moon(1,vx) 0
     set moon(1,vy) 0 
     set moon(1,vz) 0
-
+    
     set moon(2,x) 5
     set moon(2,y) -1
     set moon(2,z) -2
     set moon(2,vx) 0
     set moon(2,vy) 0 
     set moon(2,vz) 0
-
+    
     set moon(3,x) -10
     set moon(3,y) 8
     set moon(3,z) 2
     set moon(3,vx) 0
     set moon(3,vy) 0 
     set moon(3,vz) 0
-
+    
     set moon(4,x) 8
     set moon(4,y) 4
     set moon(4,z) -5
@@ -99,10 +99,16 @@ proc visualize {} {
     wm geometry . ${sx}x${sy}
     canvas .c
     
-    label .l -textvariable  e
-    pack .c -expand 1 -fill both
-   
-
+    set ::e "Hello I am a label"
+    label .l -textvariable  ::e
+    grid .l -sticky ew
+    grid .c -sticky nsew  
+    grid rowconfigure . .c -weight 1
+    grid columnconfigure . 0 -weight 1
+    
+    
+    
+    
     set dotsize 10
     set cols {_ red blue orange green}
     foreach id [range 1 4] {
@@ -110,22 +116,22 @@ proc visualize {} {
     }
     set i 0
     while {1} {
-	gravity space
+        gravity space
         foreach id [range 1 4] {
     		.c move id$id $space($id,vx) $space($id,vy)
-    	}
-	velocity space
-	incr i
-	
-	set e [energy space]
-	if {$i == 1000} {puts $e}
-	after 30	
+        }
+        velocity space
+        incr i
+        
+        set ::e "Energy: [energy space]"
+        if {$i == 1000} {puts $e}
+        after 30	
         update
     }
-
+    
 }
 
 if {$::argv0 eq [info script]} {
-  visualize
+    visualize
 }
 
