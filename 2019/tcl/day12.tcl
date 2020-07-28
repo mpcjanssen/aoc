@@ -33,13 +33,13 @@ proc init {moonVar} {
     set moon(4,vz) 0
 }
 
-proc gravity {moonVar} {
+proc gravity {moonVar axes}  {
     upvar $moonVar moon
     # Consider each pair twice
     # So both scenarios (x1 < x2) and (x2 < x1) are covered
     foreach id1 [range 1 4] {
         foreach id2 [range 1 4] {
-            foreach ax {x y z} {
+            foreach ax $axes {
                 if {$moon($id1,$ax) < $moon($id2,$ax)} {
                     incr moon($id1,v$ax)
                     incr moon($id2,v$ax) -1
@@ -48,10 +48,10 @@ proc gravity {moonVar} {
         }
     }
 }
-proc velocity {moonVar} {
+proc velocity {moonVar axes} {
     upvar $moonVar moon
     foreach id [range 1 4] {
-        foreach ax {x y z} {
+        foreach ax $axes {
             incr moon($id,$ax) $moon($id,v$ax)
         }
     }
@@ -73,24 +73,25 @@ proc energy {moonVar} {
     return $total
 }
 
-proc step {moonVar} {
+proc step {moonVar axes} {
     upvar $moonVar space
-    gravity space
-    velocity space 
+    gravity space $axes
+    velocity space $axes
 }
 
 proc part1 {} {
     init space
-    time {step space} 1000
+    time {step space {x y z}} 1000
     energy space
 }
 
 
-proc ininitial {moonVar startVar periodsVar step} {
+proc ininitial {moonVar startVar periodsVar axesVar step} {
     upvar $moonVar moon
     upvar $startVar start
     upvar $periodsVar periods
-    foreach ax {x y z} {
+    upvar $axesVar axes
+    foreach ax $axes {
         if {[dict exists $periods $ax]} continue
         set same 1
         foreach id {1 2 3 4} {
@@ -102,20 +103,23 @@ proc ininitial {moonVar startVar periodsVar step} {
        }
        if ($same) {
             dict set periods $ax $step
+            set axes [lsearch -all -inline -not $axes $ax]
+            puts $axes
        }
    }
 }
 
 proc periods {} {
+    set axes {x y z}
     init start
     init space
     set i 0
     set periods {}
     while {true} {
-        step space
+        step space $axes
         incr i
 
-        ininitial space start periods $i
+        ininitial space start periods axes $i
         if {[llength $periods] == 6} {
             # puts [lsort -stride 2 $periods]
             # puts [llength [dict values $periods]]
@@ -147,7 +151,8 @@ proc factors {n} {
 proc part2 {} {
     namespace import tcl::mathop::*
     set total_factors {}
-    foreach period [periods] {
+    puts [time {set periods [periods]}]
+    foreach period $periods {
         set f [factors $period]
         # puts $f
         foreach k [dict keys $f] {
