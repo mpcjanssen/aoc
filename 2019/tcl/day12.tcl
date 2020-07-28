@@ -86,7 +86,84 @@ proc part1 {} {
 }
 
 
+proc ininitial {moonVar startVar periodsVar step} {
+    upvar $moonVar moon
+    upvar $startVar start
+    upvar $periodsVar periods
+    foreach ax {x y z} {
+        if {[dict exists $periods $ax]} continue
+        set same 1
+        foreach id {1 2 3 4} {
+           if { $moon($id,$ax) != $start($id,$ax) || 
+                $moon($id,v$ax) != $start($id,v$ax) } {
+                set same 0
+                break 
+               }
+       }
+       if ($same) {
+            dict set periods $ax $step
+       }
+   }
+}
 
+proc periods {} {
+    init start
+    init space
+    set i 0
+    set periods {}
+    while {true} {
+        step space
+        incr i
+
+        ininitial space start periods $i
+        if {[llength $periods] == 6} {
+            # puts [lsort -stride 2 $periods]
+            # puts [llength [dict values $periods]]
+            return [dict values $periods]
+        } 
+    }
+
+}
+
+
+proc factors {n} {
+    set top $n
+    set factor 2
+    set factors {}
+    # puts "########## $n"
+    while {$factor <= $top && $n != 1} {
+        # puts "$n : $factor < $top"
+        if {$n % $factor == 0} {
+            dict incr factors $factor
+            set n [expr {$n / $factor}]
+        } else {
+            incr factor
+        }
+    }
+    # puts "<<<<<<<<< $factors"
+    return $factors
+}
+
+proc part2 {} {
+    namespace import tcl::mathop::*
+    set total_factors {}
+    foreach period [periods] {
+        set f [factors $period]
+        # puts $f
+        foreach k [dict keys $f] {
+            # puts $k
+            if {![dict exists $total_factors $k] || [dict get $f $k] > [dict get $total_factors $k]} {
+                dict set total_factors $k [dict get $f $k] 
+            }
+        }
+    }
+    set factors {}
+    # puts $total_factors
+     foreach {factor count} $total_factors {
+        lappend factors {*}[lrepeat  $count $factor]
+     }
+     return [* {*}$factors]
+}
 
 proc visualize {} {
     init space
@@ -99,8 +176,10 @@ proc visualize {} {
     wm geometry . ${sx}x${sy}
     canvas .c
     
-    set ::e "Hello I am a label"
+    set ::e ""
     label .l -textvariable  ::e
+    label .p1 -textvariable  ::p1
+    grid .p1 -sticky ew
     grid .l -sticky ew
     grid .c -sticky nsew  
     grid rowconfigure . .c -weight 1
@@ -117,14 +196,25 @@ proc visualize {} {
     set i 0
     while {1} {
         gravity space
-        foreach id [range 1 4] {
-    		.c move id$id $space($id,vx) $space($id,vy)
-        }
-        velocity space
-        incr i
-        
-        set ::e "Energy: [energy space]"
-        if {$i == 1000} {puts $e}
+      #   foreach id [range 1 4] {
+    		# .c move id$id $space($id,vx) $space($id,vy)
+      #   }
+      .c delete all
+      foreach id [range 1 4] {
+        dot .c [expr {$space($id,x)+400}] [expr {$space($id,y)+400}] $dotsize [lindex $cols $id] id$id
+    }
+    velocity space
+    incr i
+
+    set ::e "Energy: [energy space]"
+    if {$i == 1000} {set ::p1 "Part1: $::e"}
+
+        # if {$i % 500 == 0 } {
+        #     .c delete checks
+        #     foreach id [range 1 4] {
+        #         dot .c [expr {$space($id,x)+400}] [expr {$space($id,y)+400}] $dotsize black checks
+        #     }
+        # }
         after 30	
         update
     }
