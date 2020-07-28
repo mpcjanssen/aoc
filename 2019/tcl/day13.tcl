@@ -24,14 +24,17 @@ proc part2 {{visualize 0}} {
 	if {$visualize} {
 		package require Tk
 		set pad 10
-    	set sx 800
-    	set sy 800
+    	set sx 600
+    	set sy 600
     	package require Tk
     	wm geometry . ${sx}x${sy}
     	canvas .c
     
     	set ::e "Score: 0"
-    	label .l -textvariable  ::score
+		set ::delay 40
+    	label .l -textvariable  ::score -anchor w
+		scale .s -from 0 -to 100 -label "Delay" -variable ::delay -orient horizontal
+		grid .s -sticky ew
 		grid .l -sticky ew
     	grid .c -sticky nsew  
     	grid rowconfigure . .c -weight 1
@@ -55,7 +58,7 @@ proc part2 {{visualize 0}} {
 				set paddley $y
 			}
 			if {$x == -1} {
-				set ::score $t
+				set ::score "Score: $t"
 			}
 			if {$visualize && $x != -1} {
 				if {$t == 4} {set cmd dot} else {set cmd square}
@@ -75,7 +78,7 @@ proc part2 {{visualize 0}} {
 		}
 		if {$visualize} {
 			update
-			after 40
+			after $::delay
 		}
 		# puts "Ball $ballx , $bally"
 		# puts "Paddel $paddlex, $paddley"
