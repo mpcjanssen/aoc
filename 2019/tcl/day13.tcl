@@ -20,10 +20,26 @@ proc part1 {} {
 	return $blocks
 }
 
-proc part2 {} {
+proc part2 {{visualize 0}} {
+	if {$visualize} {
+		package require Tk
+		set pad 10
+    	set sx 800
+    	set sy 800
+    	package require Tk
+    	wm geometry . ${sx}x${sy}
+    	canvas .c
+    
+    	set ::e "Score: 0"
+    	label .l -textvariable  ::score
+		grid .l -sticky ew
+    	grid .c -sticky nsew  
+    	grid rowconfigure . .c -weight 1
+    	grid columnconfigure . 0 -weight 1
+	}
 	set m [CintCode $::program]
 	$m setmem 0 2
-	set score 0
+	set ::score 0
 	while {[$m state] ne "stopped"} {
 		$m run
 		# puts [$m state]
@@ -39,8 +55,16 @@ proc part2 {} {
 				set paddley $y
 			}
 			if {$x == -1} {
-				set score $t
+				set ::score $t
 			}
+			if {$visualize && $x != -1} {
+				if {$t == 4} {set cmd dot} else {set cmd square}
+				.c delete $x:$y
+				if {$t == 0} continue
+				set color [lindex {_ red blue black orange} $t]
+				$cmd .c [expr {$x*10+10}] [expr {$y*10+10}] 10 $color $x:$y
+			}
+
 		}
 		if {$ballx > $paddlex} {
 			$m input 1
@@ -49,11 +73,18 @@ proc part2 {} {
 		} else {
 			$m input -1
 		}
-
+		if {$visualize} {
+			update
+			after 40
+		}
 		# puts "Ball $ballx , $bally"
 		# puts "Paddel $paddlex, $paddley"
 		$m clearoutputs
 		# gets stdin
 	}
-	return $score
+	return $::score
+}
+
+if {$::argv0 eq [info script]} {
+    part2 1
 }
