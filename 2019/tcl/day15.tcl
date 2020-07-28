@@ -128,16 +128,18 @@ proc part2 {{visualize 0}} {
 		}
 		incr ::dist
 		set newfilled {}
-		foreach p1 $filled {
+		
 			foreach p2 [array names tofill] {
+				foreach p1 $filled {
 				if {[distance $p1 $p2]==1} {
 					if {$visualize} {
 						.c itemconfigure $p2 -fill lightblue
 						update
-						after 5
+						
 					}
 					lappend newfilled $p2
 					unset tofill($p2) 
+					break
 				}
 			}
 		
