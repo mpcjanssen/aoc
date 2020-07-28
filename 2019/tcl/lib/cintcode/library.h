@@ -36,5 +36,7 @@ int Input(Tcl_Interp * interp, machine *m, int objc, Tcl_Obj *const objv[]);
 int State(Tcl_Interp * interp, machine *m, int objc, Tcl_Obj *const objv[]);
 int Outputs(Tcl_Interp * interp, machine *m, int objc, Tcl_Obj *const objv[]);
 int ClearOutputs(Tcl_Interp * interp, machine *m, int objc, Tcl_Obj *const objv[]);
+int Clone(Tcl_Interp * interp, machine *m, int objc, Tcl_Obj *const objv[]);
+int Program(Tcl_Interp * interp, machine *m, int objc, Tcl_Obj *const objv[]);
 
 #endif //CINTCODE_LIBRARY_H

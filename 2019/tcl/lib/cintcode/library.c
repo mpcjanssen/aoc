@@ -1,6 +1,7 @@
 #include <tcl.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 #include "library.h"
 
 long num = 0;
@@ -21,7 +22,9 @@ int CintCode_Inst_Cmd(ClientData cdata, Tcl_Interp * interp, int objc, Tcl_Obj *
         INPUT,
         STATE,
         OUTPUTS,
-        CLEAROUTPUTS
+        CLEAROUTPUTS,
+        CLONE,
+        PROGRAM
     };
     static CONST char *subcmds[] = {
             "run",
@@ -31,6 +34,8 @@ int CintCode_Inst_Cmd(ClientData cdata, Tcl_Interp * interp, int objc, Tcl_Obj *
             "state",
             "outputs",
             "clearoutputs",
+            "clone",
+            "program",
             (char *) NULL
     };
     if (Tcl_GetIndexFromObj(interp, objv[1], subcmds, "subcmd", 0,
@@ -52,6 +57,10 @@ int CintCode_Inst_Cmd(ClientData cdata, Tcl_Interp * interp, int objc, Tcl_Obj *
             return Outputs(interp,m,objc, objv);
         case CLEAROUTPUTS:
             return ClearOutputs(interp,m,objc,objv);
+        case CLONE:
+            return Clone(interp,m,objc,objv);
+        case PROGRAM:
+            return Program(interp,m,objc,objv);
         default:
             Tcl_AppendResult(interp, "never has happened",NULL);
             return TCL_ERROR;
@@ -69,6 +78,23 @@ int ClearOutputs(Tcl_Interp * interp, machine *m, int objc, Tcl_Obj *const objv[
     return TCL_OK;
 };
 
+int Program(Tcl_Interp * interp, machine *m, int objc, Tcl_Obj *const objv[]) {
+    Tcl_Obj * list;
+    int ret = TCL_OK;
+    if (objc != 2) {
+        Tcl_WrongNumArgs(interp,2,objv,"");
+        return TCL_ERROR;
+    }
+    list = Tcl_NewListObj(m->max_idx+1, NULL);
+    for (int i = 0 ; i <=m->max_idx ; i++ ) {
+        ret = Tcl_ListObjAppendElement(interp,list, Tcl_NewWideIntObj(m->mem[i]));
+        if (ret != TCL_OK) {
+            return ret;
+        }
+    }
+    Tcl_SetObjResult(interp,list);
+    return TCL_OK;
+}
 
 int Mem(Tcl_Interp * interp, machine *m, int objc, Tcl_Obj *const objv[]) {
     Tcl_WideInt loc;
@@ -97,7 +123,11 @@ int Input(Tcl_Interp * interp, machine *m, int objc, Tcl_Obj *const objv[]) {
         Tcl_WrongNumArgs(interp,2,objv,"value");
         return TCL_ERROR;
     }
+    if (Tcl_IsShared(m->inputs)) {
+        m->inputs = Tcl_DuplicateObj(m->inputs);
+    }
     Tcl_ListObjAppendElement(interp,m->inputs,objv[2]);
+    Tcl_IncrRefCount(m->inputs);
     return TCL_OK;
 }
 
@@ -216,13 +246,21 @@ int Run(Tcl_Interp *interp, machine *m, int objc, Tcl_Obj *const objv[]) {
                 } else {
                     Tcl_ListObjIndex(interp, m->inputs, 0, &res);
                     Tcl_GetWideIntFromObj(interp, res, reg(m, m->PC + 1, mode1));
+                    if (Tcl_IsShared(m->inputs)) {
+                        m->inputs = Tcl_DuplicateObj(m->inputs);
+                    }
                     Tcl_ListObjReplace(interp, m->inputs, 0, 1, 0, NULL);
+                    Tcl_IncrRefCount(m->inputs);
                     m->PC += 2;
                 }
                 break;
             case 4:
                 item = *reg(m,m->PC+1,mode1);
+                if (Tcl_IsShared(m->outputs)) {
+                    m->outputs = Tcl_DuplicateObj(m->outputs);
+                }
                 Tcl_ListObjAppendElement(interp, m->outputs,Tcl_NewWideIntObj(item));
+                Tcl_IncrRefCount(m->outputs);
                 m->PC += 2;
                 break;
             case 5:
@@ -273,12 +311,46 @@ int Run(Tcl_Interp *interp, machine *m, int objc, Tcl_Obj *const objv[]) {
 }
 
 void CintCode_Del_Cmd(ClientData cdata) {
-    machine * m = (machine *)m;
+    machine * m = (machine *)cdata;
     Tcl_DecrRefCount(m->inputs);
     Tcl_DecrRefCount(m->outputs);
     ckfree(m->mem);
     ckfree(m);
 }
+
+int Clone(Tcl_Interp * interp, machine * m , int objc, Tcl_Obj * const objv[]) {
+    int length;
+    int res;
+
+    Tcl_Obj ** items;
+    Tcl_Obj * cmdName;
+    if (objc != 2) {
+        Tcl_WrongNumArgs(interp,2,objv,"");
+        return TCL_ERROR;
+    }
+    machine * newm = ckalloc(sizeof(machine));
+
+    newm->inputs = Tcl_NewListObj(0,NULL);
+    newm->outputs = Tcl_NewListObj(0,NULL);
+    Tcl_IncrRefCount(newm->inputs);
+    Tcl_IncrRefCount(newm->outputs);
+
+    newm->PC = m->PC;
+    newm->state = m->state;
+    newm->base = m->base;
+    newm->max_idx = m->max_idx;
+    newm->mem = ckalloc((newm->max_idx + 1) * sizeof(Tcl_WideInt));
+    newm->mem = memcpy (newm->mem, m->mem, (newm->max_idx + 1) * sizeof(Tcl_WideInt));
+
+    Tcl_Obj * numObj = Tcl_NewWideIntObj(num);
+    cmdName = Tcl_NewStringObj("cintcode::",-1);
+    Tcl_AppendObjToObj(cmdName, numObj);
+    Tcl_CreateObjCommand(interp, Tcl_GetString(cmdName), CintCode_Inst_Cmd, newm, CintCode_Del_Cmd);
+    Tcl_SetObjResult(interp,cmdName);
+    num++;
+    return TCL_OK;
+}
+
 
 int CintCode_Cmd(ClientData cdata, Tcl_Interp * interp, int objc, Tcl_Obj * const objv[]) {
     int length;
