@@ -1,6 +1,3 @@
-lappend auto_path [file dirname [info script]]/lib
-tcl::tm::path add [file dirname [info script]]/modules [file dirname [info script]]/lib/cintcode
-package require util
 
 proc init {varname} {
     upvar #0 $varname moon
@@ -39,8 +36,7 @@ proc gravity {ax}  {
         if {$moon($id1,$ax) < $moon($id2,$ax)} {
             incr moon($id1,v$ax)
             incr moon($id2,v$ax) -1
-        }
-        if {$moon($id1,$ax) > $moon($id2,$ax)} {
+        } elseif {$moon($id1,$ax) > $moon($id2,$ax)} {
             incr moon($id2,v$ax)
             incr moon($id1,v$ax) -1
         }      
@@ -82,12 +78,9 @@ proc part1 {} {
 
 proc period {ax} {
     variable moon
-
-    set step 0
-    while {true} {
+    for {set step 1} 1 {incr step} {
         gravity $ax
         velocity $ax
-        incr step
         # if {$step % 1000 == 0} {puts $step}
         # Halfway between initial and period all velocities on an axis are 0 again (as in the intial condition)
         if { 
@@ -132,10 +125,10 @@ proc part2 {} {
     foreach period $periods {
         set f [factors $period]
         # puts $f
-        foreach k [dict keys $f] {
+        dict for {k val} $f {
             # puts $k
-            if {![dict exists $total_factors $k] || [dict get $f $k] > [dict get $total_factors $k]} {
-                dict set total_factors $k [dict get $f $k] 
+            if {![dict exists $total_factors $k] || $val > [dict get $total_factors $k]} {
+                dict set total_factors $k $val
             }
         }
     }
