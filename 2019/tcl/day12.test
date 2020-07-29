@@ -1,7 +1,7 @@
 package require tcltest
 namespace import ::tcltest::*
 
-source day12.tcl
+source day12f.tcl
 
 test part1 {} -body {part1} -result {7179}
 test part2 {} -body {part2} -result {428576638953552}
