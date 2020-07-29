@@ -2,8 +2,8 @@ lappend auto_path [file dirname [info script]]/lib
 tcl::tm::path add [file dirname [info script]]/modules [file dirname [info script]]/lib/cintcode
 package require util
 
-proc init {moonVar} {
-    upvar $moonVar moon
+proc init {varname} {
+    upvar #0 $varname moon
     set moon(1,x) 3
     set moon(1,y) 15
     set moon(1,z) 8
@@ -33,35 +33,32 @@ proc init {moonVar} {
     set moon(4,vz) 0
 }
 
-proc gravity {moonVar axes}  {
-    upvar $moonVar moon
-    # Consider each pair twice
-    # So both scenarios (x1 < x2) and (x2 < x1) are covered
-    foreach id1 [range 1 4] {
-        foreach id2 [range 1 4] {
-            foreach ax $axes {
-                if {$moon($id1,$ax) < $moon($id2,$ax)} {
-                    incr moon($id1,v$ax)
-                    incr moon($id2,v$ax) -1
-                }
-            }
+proc gravity {ax}  {
+    variable moon
+    foreach {id1 id2} {1 2 1 3 1 4 2 3 2 4 3 4} {
+        if {$moon($id1,$ax) < $moon($id2,$ax)} {
+            incr moon($id1,v$ax)
+            incr moon($id2,v$ax) -1
         }
+        if {$moon($id1,$ax) > $moon($id2,$ax)} {
+            incr moon($id2,v$ax)
+            incr moon($id1,v$ax) -1
+        }      
     }
 }
-proc velocity {moonVar axes} {
-    upvar $moonVar moon
-    foreach id [range 1 4] {
-        foreach ax $axes {
-            incr moon($id,$ax) $moon($id,v$ax)
-        }
-    }
+proc velocity {ax} {
+    variable moon
+    incr moon(1,$ax) $moon(1,v$ax)
+    incr moon(2,$ax) $moon(2,v$ax)
+    incr moon(3,$ax) $moon(3,v$ax)
+    incr moon(4,$ax) $moon(4,v$ax)
 }
 
-proc energy {moonVar} {
-    namespace import tcl::mathfunc::abs
-    upvar $moonVar moon
+namespace import tcl::mathfunc::abs
+proc energy {} {
+    variable moon
     set total 0
-    foreach id [range 1 4] {
+    foreach id {1 2 3 4} {
         set kin 0
         set pot 0
         foreach ax {x y z} {
@@ -73,65 +70,40 @@ proc energy {moonVar} {
     return $total
 }
 
-proc step {moonVar axes} {
-    upvar $moonVar space
-    gravity space $axes
-    velocity space $axes
-}
-
 proc part1 {} {
-    init space
-    time {step space {x y z}} 1000
-    energy space
-}
-
-
-proc ininitial {moonVar startVar periodsVar axesVar step} {
-    upvar $moonVar moon
-    upvar $startVar start
-    upvar $periodsVar periods
-    upvar $axesVar axes
-    foreach ax $axes {
-        if {[dict exists $periods $ax]} continue
-        set same 1
-        foreach id {1 2 3 4} {
-           if { $moon($id,$ax) != $start($id,$ax) || 
-                $moon($id,v$ax) != $start($id,v$ax) } {
-                set same 0
-                break 
-               }
-       }
-       if ($same) {
-            dict set periods $ax $step
-            set axes [lsearch -all -inline -not $axes $ax]
-            puts $axes
-       }
-   }
-}
-
-proc periods {} {
-    set axes {x y z}
-    init start
-    init space
-    set i 0
-    set periods {}
-    while {true} {
-        step space $axes
-        incr i
-
-        ininitial space start periods axes $i
-        if {[llength $periods] == 6} {
-            # puts [lsort -stride 2 $periods]
-            # puts [llength [dict values $periods]]
-            return [dict values $periods]
-        } 
+    init moon
+    for {set i 0} {$i < 1000} {incr i} {
+        gravity x ; velocity x
+        gravity y ; velocity y
+        gravity z ; velocity z
     }
+    energy
+}
 
+proc period {ax} {
+    variable moon
+
+    set step 0
+    while {true} {
+        gravity $ax
+        velocity $ax
+        incr step
+        # if {$step % 1000 == 0} {puts $step}
+        # Halfway between initial and period all velocities on an axis are 0 again (as in the intial condition)
+        if { 
+            $moon(1,v$ax) == 0 &&
+            $moon(2,v$ax) == 0 &&
+            $moon(3,v$ax) == 0 &&
+            $moon(4,v$ax) == 0
+        } {
+            return [expr {$step * 2}]
+        }
+    }
 }
 
 
 proc factors {n} {
-    set top $n
+    set top [expr {int(sqrt($n))+1}]
     set factor 2
     set factors {}
     # puts "########## $n"
@@ -144,14 +116,19 @@ proc factors {n} {
             incr factor
         }
     }
+    if {$n != 1} {
+        dict incr factors $n
+    }
     # puts "<<<<<<<<< $factors"
     return $factors
 }
 
 proc part2 {} {
     namespace import tcl::mathop::*
+    puts [time {
+    init moon
     set total_factors {}
-    puts [time {set periods [periods]}]
+    set periods [list [period x] [period y] [period z]]
     foreach period $periods {
         set f [factors $period]
         # puts $f
@@ -167,13 +144,14 @@ proc part2 {} {
      foreach {factor count} $total_factors {
         lappend factors {*}[lrepeat  $count $factor]
      }
+    }]
      return [* {*}$factors]
 }
 
 proc visualize {} {
-    init space
-    
-    
+    init moon
+    upvar #0 moon space
+
     set pad 10
     set sx 800
     set sy 800
@@ -190,9 +168,6 @@ proc visualize {} {
     grid rowconfigure . .c -weight 1
     grid columnconfigure . 0 -weight 1
     
-    
-    
-    
     set dotsize 10
     set cols {_ red blue orange green}
     foreach id [range 1 4] {
@@ -200,7 +175,9 @@ proc visualize {} {
     }
     set i 0
     while {1} {
-        gravity space
+        gravity x
+        gravity y
+        gravity z
       #   foreach id [range 1 4] {
     		# .c move id$id $space($id,vx) $space($id,vy)
       #   }
@@ -208,10 +185,11 @@ proc visualize {} {
       foreach id [range 1 4] {
         dot .c [expr {$space($id,x)+400}] [expr {$space($id,y)+400}] $dotsize [lindex $cols $id] id$id
     }
-    velocity space
+    velocity x
+    velocity y
+    velocity z
     incr i
-
-    set ::e "Energy: [energy space]"
+    set ::e "Energy: [energy]"
     if {$i == 1000} {set ::p1 "Part1: $::e"}
 
         # if {$i % 500 == 0 } {
