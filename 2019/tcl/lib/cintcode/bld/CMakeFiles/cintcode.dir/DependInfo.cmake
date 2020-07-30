@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/mpcjanssen/Sync/Notebooks/aoc/2019/tcl/lib/cintcode/library.c" "/home/mpcjanssen/Sync/Notebooks/aoc/2019/tcl/lib/cintcode/bld/CMakeFiles/cintcode.dir/library.c.o"
+  "/home/mpcjanssen/Src/aoc/2019/tcl/lib/cintcode/library.c" "/home/mpcjanssen/Src/aoc/2019/tcl/lib/cintcode/bld/CMakeFiles/cintcode.dir/library.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 
@@ -16,6 +16,7 @@ set(CMAKE_TARGET_DEFINITIONS_C
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
+  "/usr/include/tcl"
   )
 
 # Targets to which this target links.

@@ -6,17 +6,3 @@
 
 #IncludeRegexTransform: 
 
-/home/mpcjanssen/Sync/Notebooks/aoc/2019/tcl/lib/cintcode/library.c
-tcl.h
--
-stdlib.h
--
-assert.h
--
-library.h
-/home/mpcjanssen/Sync/Notebooks/aoc/2019/tcl/lib/cintcode/library.h
-
-/home/mpcjanssen/Sync/Notebooks/aoc/2019/tcl/lib/cintcode/library.h
-tcl.h
--
-
