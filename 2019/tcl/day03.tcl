@@ -9,11 +9,7 @@ set data [read-input day03]
 
 
 proc line {input name} {
-    set ::idx 0
     set line {{0 0}} 
-    upvar #0 $name dist
-    set dist(0,0) $::idx
-    incr ::idx
     foreach desc [split $input , ] {
         addsegment line $desc $name
     }
@@ -41,8 +37,6 @@ proc addsegment {lineVar desc name} {
     foreach _ [range 1 $length] {
         incr sy $dy
         incr sx $dx
-        set dist($sx,$sy) $::idx
-        incr ::idx
         lappend line [list $sx $sy]
     }
 }
@@ -63,13 +57,8 @@ proc linesum {p} {
     sum [list [lsearch -exact $::l1 $p]  [lsearch -exact $::l2 $p]]
 }
 
-proc linesum2 {p} {
-    lassign $p x y
-    return [expr {$::d1($x,$y) + $::d2($x,$y)}]
-}
-
 proc part2 {} {
-    return [lindex [lsort -integer -index 0 [lmap x $::ints {list [linesum2 $x] $x}]] 1]
+    return [lindex [lsort -integer -index 0 [lmap x $::ints {list [linesum $x] $x}]] 1]
 }
 
 

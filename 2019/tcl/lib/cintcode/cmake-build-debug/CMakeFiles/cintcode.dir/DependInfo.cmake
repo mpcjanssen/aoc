@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "C:/Users/Mark/Sync/Notebooks/aoc/2019/tcl/lib/cintcode/library.c" "C:/Users/Mark/Sync/Notebooks/aoc/2019/tcl/lib/cintcode/cmake-build-debug/CMakeFiles/cintcode.dir/library.c.obj"
+  "C:/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/library.c" "C:/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-debug/CMakeFiles/cintcode.dir/library.c.obj"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 
