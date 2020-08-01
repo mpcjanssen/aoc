@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="cintcode"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="cintcode">
+				<Option output="/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/libcintcode.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_TCL_STUBS"/>
+					<Add directory="/usr/include/tcl"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/Makefile&quot;  VERBOSE=1 cintcode"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="cintcode/fast">
+				<Option output="/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/libcintcode.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_TCL_STUBS"/>
+					<Add directory="/usr/include/tcl"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/Makefile&quot;  VERBOSE=1 cintcode/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/library.c">
+			<Option target="cintcode"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/library.h">
+			<Option target="cintcode"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
