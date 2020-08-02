@@ -4,6 +4,6 @@ namespace import ::tcltest::*
 source day19.tcl
 
 test part1-intcode {} -body {part1} -result {110}
-test part2-intcode {} -body {part2} -result {stopped 123}
+# test part2-intcode {} -body {part2} -result {stopped 123}
 
 cleanupTests
