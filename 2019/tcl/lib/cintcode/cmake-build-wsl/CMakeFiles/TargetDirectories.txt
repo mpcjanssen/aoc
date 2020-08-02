@@ -1,3 +1,0 @@
-/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/CMakeFiles/rebuild_cache.dir
-/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/CMakeFiles/edit_cache.dir
-/mnt/c/Users/Mark/Src/aoc/2019/tcl/lib/cintcode/cmake-build-wsl/CMakeFiles/cintcode.dir

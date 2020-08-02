@@ -1,1 +1,0 @@
-/usr/bin/cc -fPIC   -shared -Wl,-soname,libcintcode.so -o libcintcode.so CMakeFiles/cintcode.dir/library.c.o  -ltclstub8.6 
