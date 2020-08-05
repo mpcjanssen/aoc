@@ -4,28 +4,43 @@ package require util
 package require cintcode
 
 
-
-
-proc part1 {} {
-    set program [read-input day19]
-    set results {}
-    foreach x [range 0 49] {
-	foreach y [range 0 49] {
-	    set machine [CintCode [split $program ,]]
+set program [read-input day19]
+proc value {x y} {
+	    set machine [CintCode [split $::program ,]]
 	    $machine input $x
 	    $machine input $y
 	    $machine run
 	    set result [lindex [$machine outputs] end]
-	    lappend results $result
 	    rename $machine {}
+	    return $result
+}
+
+proc part1 {} {
+    set results {}
+    foreach x [range 0 49] {
+	foreach y [range 0 49] {
+	    lappend results [value $x $y]
 	}
     }
     return [sum $results]
 }
 
+
+proc fits {y} {
+		set x 0
+		while {[value $x $y] == 0} {
+			incr x
+		}
+		return [list [value [expr {$x+99}] [expr {$y-99}]] $y $x]
+}
+
+
 proc part2 {} {
-    set program [read-input day19]
-    set machine [CintCode [split $program ,]]
+
+	lassign [fits 2164] -> y x
+	return [expr {$y-99 + $x*10000}]
+
+    
 }
 
 proc visualize {} {
