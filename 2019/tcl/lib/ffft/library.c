@@ -2,6 +2,12 @@
 #include <stdlib.h>
 #define __unused __attribute__((unused))
 
+inline void swapIntP(int ** a, int ** b) {
+    void * temp = *a;
+    *a = *b ;
+    *b = temp;
+}
+
 int Ffft_Cmd(__unused ClientData cdata, Tcl_Interp * interp, int objc, Tcl_Obj * const objv[]) {
     int length;
     int patterns[] = {0, 1, 0 ,-1};
@@ -32,9 +38,7 @@ int Ffft_Cmd(__unused ClientData cdata, Tcl_Interp * interp, int objc, Tcl_Obj *
     }
 
     while (phase > 0) {
-        int * temp = oldDigits;
-        oldDigits  = digits;
-        digits = temp;
+        swapIntP(&digits,&oldDigits);
         for (int n = 0 ; n < length ; n++) {
             Tcl_WideInt sum = 0;
             for (int idx = n ; idx < length ; idx++ ) {
