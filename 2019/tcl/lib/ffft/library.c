@@ -1,12 +1,8 @@
 #include <tcl.h>
 #include <stdlib.h>
-#include <assert.h>
-#include <string.h>
-#include "library.h"
+#define __unused __attribute__((unused))
 
-
-
-int Ffft_Cmd(ClientData cdata, Tcl_Interp * interp, int objc, Tcl_Obj * const objv[]) {
+int Ffft_Cmd(__unused ClientData cdata, Tcl_Interp * interp, int objc, Tcl_Obj * const objv[]) {
     int length;
     int patterns[] = {0, 1, 0 ,-1};
     Tcl_WideInt phase;
@@ -46,7 +42,7 @@ int Ffft_Cmd(ClientData cdata, Tcl_Interp * interp, int objc, Tcl_Obj * const ob
 //                printf("%d\n", pat);
                 sum += pat * oldDigits[idx];
             }
-            digits[n] = abs(sum) % 10;
+            digits[n] = llabs(sum) % 10;
         }
         phase--;
     }
@@ -62,7 +58,7 @@ int Ffft_Cmd(ClientData cdata, Tcl_Interp * interp, int objc, Tcl_Obj * const ob
     return TCL_OK;
 }
 
-DLLEXPORT int Ffft_Init(Tcl_Interp * interp) {
+DLLEXPORT __unused  int Ffft_Init(Tcl_Interp * interp) {
     Tcl_InitStubs(interp, "8.5", 0);
     Tcl_CreateObjCommand(interp,"ffft", Ffft_Cmd,NULL, NULL);
     return TCL_OK;

@@ -154,7 +154,6 @@ proc part2 {} {
     set x {3 5 -10 8 0 0 0 0}
     set y {15 -1 8 4 0 0 0 0}
     set z {8 -2 2 -5 0 0 0 0}
-    puts [time {
     set total_factors {}
     set periods [list [period {*}$x] [period {*}$y] [period {*}$z]]
     foreach period $periods {
@@ -172,7 +171,6 @@ proc part2 {} {
      foreach {factor count} $total_factors {
         lappend factors {*}[lrepeat  $count $factor]
      }
-    }]
      return [* {*}$factors]
 }
 
