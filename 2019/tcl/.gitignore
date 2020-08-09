@@ -1,0 +1,5 @@
+.ipynb_checkpoints
+
+bld/
+cmake-build-debug/
+.idea/
