@@ -12,8 +12,8 @@ int Ffft_Cmd(ClientData cdata, Tcl_Interp * interp, int objc, Tcl_Obj * const ob
     Tcl_WideInt phase;
     Tcl_Obj ** items;
     Tcl_Obj * result;
-    Tcl_WideInt * oldDigits;
-    Tcl_WideInt * digits;
+    int * oldDigits;
+    int * digits;
 
 
     if (objc != 3) {
@@ -26,17 +26,17 @@ int Ffft_Cmd(ClientData cdata, Tcl_Interp * interp, int objc, Tcl_Obj * const ob
     if (Tcl_GetWideIntFromObj(interp,objv[2],&phase)!=TCL_OK) {
         return TCL_ERROR;
     }
-    oldDigits = ckalloc(length * sizeof(Tcl_WideInt));
-    digits = ckalloc(length * sizeof(Tcl_WideInt));
+    oldDigits = ckalloc(length * sizeof(int));
+    digits = ckalloc(length * sizeof(int));
 
     for (int idx = 0 ; idx < length ; idx++) {
-        if (Tcl_GetWideIntFromObj(interp,items[idx],&digits[idx])!=TCL_OK) {
+        if (Tcl_GetIntFromObj(interp,items[idx],&digits[idx])!=TCL_OK) {
             return TCL_ERROR;
         }
     }
 
     while (phase > 0) {
-        Tcl_WideInt * temp = oldDigits;
+        int * temp = oldDigits;
         oldDigits  = digits;
         digits = temp;
         for (int n = 0 ; n < length ; n++) {
@@ -52,7 +52,7 @@ int Ffft_Cmd(ClientData cdata, Tcl_Interp * interp, int objc, Tcl_Obj * const ob
     }
     result = Tcl_NewListObj(length,NULL);
     for (int idx = 0 ; idx < length ; idx++) {
-        if (Tcl_ListObjAppendElement(interp, result, Tcl_NewLongObj(digits[idx]))!=TCL_OK) {
+        if (Tcl_ListObjAppendElement(interp, result, Tcl_NewIntObj(digits[idx]))!=TCL_OK) {
             return TCL_ERROR;
         }
     }
