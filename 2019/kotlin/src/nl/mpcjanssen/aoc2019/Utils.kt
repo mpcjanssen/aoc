@@ -9,3 +9,8 @@ class Day(val number: Int) {
         println ("" + measureTimeMillis {println("part2: ${part2.invoke(input) }")} + " ms")
     }
 }
+
+interface TwoD<T> {
+    val x: T
+    val y: T
+}

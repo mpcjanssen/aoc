@@ -20,10 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ed725e18-af23-4a76-a881-250d91853cfb" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/KotlinJavaRuntime.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/KotlinJavaRuntime.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/OrderKey.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/nl/mpcjanssen/aoc2019/ICode.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/nl/mpcjanssen/aoc2019/day14.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kotlin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/kotlin.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/nl/mpcjanssen/aoc2019/Utils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/nl/mpcjanssen/aoc2019/Utils.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +36,7 @@
       <list>
         <option value="Kotlin Class" />
         <option value="Kotlin File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -48,28 +50,48 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../julia" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Mark\Src\aoc\2019\kotlin\src\nl\mpcjanssen\aoc2019" />
     </key>
   </component>
-  <component name="RunManager" selected="Kotlin.Day16Kt">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
+  <component name="RunManager" selected="Application.OrderKey">
+    <configuration name="OrderKey" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="nl.mpcjanssen.aoc2019.OrderKey" />
+      <module name="kotlin" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="nl.mpcjanssen.aoc2019.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Day13Kt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <module name="kotlin" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" value="Day13Kt" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/../input" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -100,32 +122,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Day4Kt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <module name="kotlin" />
-      <option name="VM_PARAMETERS" value="" />
-      <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" value="nl.mpcjanssen.aoc2019.Day4Kt" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/../input" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Day5Kt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <module name="kotlin" />
-      <option name="VM_PARAMETERS" value="" />
-      <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" value="nl.mpcjanssen.aoc2019.Day5Kt" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/../input" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Day6Kt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <module name="kotlin" />
       <option name="VM_PARAMETERS" />
@@ -140,19 +136,19 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Kotlin.Day4Kt" />
-      <item itemvalue="Kotlin.Day5Kt" />
+      <item itemvalue="Application.OrderKey" />
       <item itemvalue="Kotlin.Day6Kt" />
       <item itemvalue="Kotlin.Day14Kt" />
       <item itemvalue="Kotlin.Day16Kt" />
+      <item itemvalue="Kotlin.Day13Kt" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.OrderKey" />
+        <item itemvalue="Kotlin.Day13Kt" />
         <item itemvalue="Kotlin.Day16Kt" />
         <item itemvalue="Kotlin.Day14Kt" />
         <item itemvalue="Kotlin.Day6Kt" />
-        <item itemvalue="Kotlin.Day5Kt" />
-        <item itemvalue="Kotlin.Day4Kt" />
       </list>
     </recent_temporary>
   </component>
@@ -169,6 +165,10 @@
       <updated>1595231435442</updated>
       <workItem from="1595231436768" duration="26406000" />
       <workItem from="1596981876394" duration="1545000" />
+      <workItem from="1597654825031" duration="1261000" />
+      <workItem from="1597824139270" duration="3748000" />
+      <workItem from="1597836286153" duration="50000" />
+      <workItem from="1597836355185" duration="193000" />
     </task>
     <servers />
   </component>
@@ -185,40 +185,44 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="249" y="0" key="#Project_Structure" timestamp="1596981911257">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="311" y="0" key="#Project_Structure" timestamp="1597654966383">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="249" y="0" key="#Project_Structure/0.0.1536.824@0.0.1536.824" timestamp="1596981911257" />
-    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1595248717824">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="311" y="0" key="#Project_Structure/0.0.1920.1040@0.0.1920.1040" timestamp="1597654966383" />
+    <state x="331" y="134" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1597656060970">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
+    <state x="331" y="134" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1597656060970" />
     <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1595248717824" />
-    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1595248717058">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="592" y="217" key="FileChooserDialogImpl" timestamp="1597836363582">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
+    <state x="592" y="217" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1597836363582" />
     <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1595248717058" />
-    <state width="1342" height="195" key="GridCell.Tab.0.bottom" timestamp="1596983923780">
+    <state width="1877" height="279" key="GridCell.Tab.0.bottom" timestamp="1597829544605">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1342" height="195" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1596983923780" />
-    <state width="1874" height="347" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1595312084859" />
-    <state width="1342" height="195" key="GridCell.Tab.0.center" timestamp="1596983923779">
+    <state width="1877" height="279" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1597829544605" />
+    <state width="1877" height="279" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1597825584704" />
+    <state width="1877" height="279" key="GridCell.Tab.0.center" timestamp="1597829544605">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1342" height="195" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1596983923779" />
-    <state width="1874" height="347" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1595312084859" />
-    <state width="1342" height="195" key="GridCell.Tab.0.left" timestamp="1596983923779">
+    <state width="1877" height="279" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1597829544605" />
+    <state width="1877" height="279" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1597825584703" />
+    <state width="1877" height="279" key="GridCell.Tab.0.left" timestamp="1597829544601">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1342" height="195" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1596983923779" />
-    <state width="1874" height="347" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1595312084859" />
-    <state width="1342" height="195" key="GridCell.Tab.0.right" timestamp="1596983923780">
+    <state width="1877" height="279" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1597829544601" />
+    <state width="1877" height="279" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1597825584703" />
+    <state width="1877" height="279" key="GridCell.Tab.0.right" timestamp="1597829544605">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1342" height="195" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1596983923780" />
-    <state width="1874" height="347" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1595312084859" />
+    <state width="1877" height="279" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1597829544605" />
+    <state width="1877" height="279" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1597825584703" />
     <state width="1874" height="347" key="GridCell.Tab.1.bottom" timestamp="1595312084860">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -235,6 +239,14 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1874" height="347" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1595312084860" />
+    <state x="277" y="57" key="SettingsEditor" timestamp="1597836335812">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="277" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1597836335812" />
+    <state x="535" y="317" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1597654958472">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="535" y="317" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1920.1040@0.0.1920.1040" timestamp="1597654958472" />
     <state x="623" y="230" width="672" height="678" key="search.everywhere.popup" timestamp="1595249886171">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
