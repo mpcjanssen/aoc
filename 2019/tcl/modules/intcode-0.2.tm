@@ -3,7 +3,7 @@ oo::class create IntCode {
   constructor {program} {
     set Mem(0) 0 
     set idx 0
-    foreach val [split [string trim $program] ,] {
+    foreach val $program {
       set Mem($idx) $val
       incr idx
     }
@@ -52,13 +52,16 @@ oo::class create IntCode {
     return [expr {$param + ($mode >> 1) * $Base } ]
   }
 
-  method step {} {
-    incr ::step
+  method run {} {
+    set State running
+    while {$State eq "running"} {
     variable Mem
 
+
     set inst $Mem($PC)
+    # puts Mem($PC)=$Mem($PC)
     set opcode [expr {$inst % 100}]
-    set mode [expr {$Mem($PC)/100}]
+    set mode [expr {$inst/100}]
     # puts $inst:$opcode:$mode
     set PC2 $PC
     set param1 $Mem([incr PC2])  
@@ -140,12 +143,7 @@ oo::class create IntCode {
     }
         
   }
-  method run {} {
-    set State running
-    while {$State eq "running"} {
-      my step
-    }
-  }
+}
   method state {} {
     return $State
   }

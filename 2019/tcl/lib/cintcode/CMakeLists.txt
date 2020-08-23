@@ -3,17 +3,7 @@ project(cintcode C)
 set(CMAKE_BUILD_TYPE Release)
 
 set(CMAKE_C_STANDARD 99)
+find_library(TCLLIB NAMES tclstub8.6 tclstub86)
 add_library(cintcode SHARED library.c library.h)
-
-if (UNIX)
-	include_directories(SYSTEM /usr/include)
-	target_link_libraries(cintcode tclstub8.6)
-endif (UNIX)
-
-if (WIN32)
-	include_directories(SYSTEM /c/Tcl/include)
-	link_directories(SYSTEM /c/Tcl/lib)
-	target_link_libraries(cintcode tclstub86)
-endif (WIN32)
-
+target_link_libraries(cintcode ${TCLLIB})
 add_definitions(-DUSE_TCL_STUBS)
