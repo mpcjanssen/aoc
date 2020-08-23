@@ -2,6 +2,7 @@ lappend auto_path [file dirname [info script]]/lib {C:\Users\Mark\Src\site-tcl\l
 tcl::tm::path add [file dirname [info script]]/modules [file dirname [info script]]/lib/cintcode
 package require util
 package require cintcode
+package require intcode
 
 set program  [split [read-input day02] ,]
 interp alias {} Machine {} CintCode 
@@ -31,3 +32,10 @@ proc part2 {} {
     }
 }
 
+
+
+if {$::argv0 eq [info script]} {
+  puts [time {puts [part2]}]
+  interp alias {} Machine {} IntCode new
+  puts [time {puts [part2]}]
+}
