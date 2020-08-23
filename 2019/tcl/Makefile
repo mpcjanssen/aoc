@@ -1,10 +1,12 @@
 .PHONY: all intcode
 
+TCLSH:=tclsh
+
 all:
-	tclsh all.tcl
+	${TCLSH} all.tcl
 
 intcode:
-	tclsh all.tcl -match *-intcode
+	${TCLSH} all.tcl -match *-intcode
 
 shell:
 	tkcon
