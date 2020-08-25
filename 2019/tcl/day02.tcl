@@ -13,7 +13,9 @@ proc runwithinput {program in1 in2} {
     $machine setmem 1 $in1
     $machine setmem 2 $in2
     $machine run
-    return [$machine mem 0]
+    set result [$machine mem 0]
+    rename $machine {}
+    return $result
 } 
 
 
