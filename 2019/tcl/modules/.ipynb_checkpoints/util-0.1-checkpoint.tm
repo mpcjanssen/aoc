@@ -1,4 +1,9 @@
 set scriptdir [file dirname [info script]]
+package require http
+package require twapi
+package require tdom
+http::register https 443 twapi::tls_socket
+
 proc iterate-until {f x px} { 
   set res {}
   while {![{*}$px $x]} {
@@ -7,6 +12,21 @@ proc iterate-until {f x px} {
   }
   return $res
 }
+
+proc display-day {year day part} {
+    incr part -1
+    set cookie session=$::env(SESSION)
+
+    set tok [http::geturl https://adventofcode.com/$year/day/$day -headers [list Cookie $cookie ]]
+    set html [http::data $tok]
+    set doc [dom parse -html $html]
+    set html [[lindex [$doc selectNodes //article] $part] asHTML]
+    rename $doc {}
+    jupyter::html $html
+    
+    http::cleanup $tok
+}
+
 proc iterate-while {f x px} { 
   set res {}
   while {[{*}$px $x]} {
@@ -84,14 +104,14 @@ proc zoomcanvas {c sx sy pad} {
     $c move all $pad $pad
 }
  
- proc dot {c x y size color} {
+ proc dot {c x y size color {tags {}}} {
    set size [expr {$size/2.0}]
-    $c create oval [expr {$x-$size}] [expr {$y-$size}]  [expr {$x+$size}] [expr {$y+$size}] -fill $color
+    $c create oval [expr {$x-$size}] [expr {$y-$size}]  [expr {$x+$size}] [expr {$y+$size}] -fill $color -tags $tags
 
 }
- proc square {c x y size color} {
+ proc square {c x y size color {tags {}}} {
    set size [expr {$size/2.0}]
-    $c create rectangle [expr {$x-$size}] [expr {$y-$size}]  [expr {$x+$size}] [expr {$y+$size}] -fill $color
+    $c create rectangle [expr {$x-$size}] [expr {$y-$size}]  [expr {$x+$size}] [expr {$y+$size}] -fill $color -tags $tags
 
 }
 
