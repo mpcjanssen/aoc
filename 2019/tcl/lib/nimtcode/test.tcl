@@ -1,4 +1,5 @@
-tcl::tm::path add [file join [file dirname [info script]] .] {C:\Users\Mark\Sync\Notebooks\aoc\2019\tcl\modules}
+tcl::tm::path add [file join [file dirname [info script]] .]
+tcl::tm::path add [file join [file dirname [info script]] ../../modules]
 package require nimtcode
 package require util
 

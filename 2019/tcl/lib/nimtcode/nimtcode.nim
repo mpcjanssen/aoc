@@ -9,7 +9,7 @@ type
   State = enum
     stIdle, stRunning, stInputPending, stStopped 
 
-  NimtCode = ref object of RootObj
+  NimtCode = ref object
     pc: int
     base: int
     mem: TableRef[int,int]
@@ -67,7 +67,7 @@ proc step(machine: NimtCode) =
     echo "Invalid opcode: " & $opcode
     quit(-1)
 
-  # echo fmt"Got mem[{pc}] => {opcode}({param1}|{mode1}={val1}, {param2}|{mode2}={val2}, {param3}|{mode3})"
+  echo fmt"Got mem[{pc}] => {opcode}({param1}|{mode1}={val1}, {param2}|{mode2}={val2}, {param3}|{mode3})"
 
 proc setMem(machine: NimtCode, interp: Tcl.PInterp, objc: cint, objv: Tcl.PPObj): cint =
   if objc != 4:
@@ -99,8 +99,7 @@ proc run(machine: NimtCode, interp: Tcl.PInterp, objc: cint, objv: Tcl.PPObj): c
   return Tcl.OK
 
 proc NimtCodeInstance_Del(clientData: Tcl.TClientData) =
-  var m = cast[ptr NimtCode](clientData)[]
-  echo m.repr
+  var m = cast[NimtCode](clientData)
   GC_unref(m)
 
   
@@ -111,17 +110,17 @@ proc NimtCodeInstance_Cmd(clientData: Tcl.TClientData, interp: Tcl.PInterp, objc
     return Tcl.ERROR
   
 
-  var m = cast[ptr NimtCode](clientData)
+  var m = cast[NimtCode](clientData)
   # echo m.mem
   # echo m.repr
   var subCmd = $Tcl.GetString(objv[1])
   case subCmd:
     of "setmem":
-      return m[].setMem(interp, objc, objv)
+      return m.setMem(interp, objc, objv)
     of "mem":
-      return m[].getMem(interp,objc,objv)
+      return m.getMem(interp,objc,objv)
     of "run":
-      return m[].run(interp, objc, objv)
+      return m.run(interp, objc, objv)
     else:
       Tcl.SetObjResult(interp, Tcl.NewStringObj("invalid subcommand " & subCmd, -1))
       return Tcl.ERROR
@@ -153,7 +152,7 @@ proc NimtCode_Cmd(clientData: Tcl.TClientData, interp: Tcl.PInterp, objc: cint, 
   
 
 
-  discard Tcl.CreateObjCommand(interp,  "test", NimtCodeInstance_Cmd, cast[Tcl.TClientData] (addr m),NimtCodeInstance_Del)
+  discard Tcl.CreateObjCommand(interp,  "test", NimtCodeInstance_Cmd, cast[Tcl.TClientData] (m),NimtCodeInstance_Del)
   Tcl.SetObjResult(interp, Tcl.NewStringObj("test",-1))
   num.inc
   return Tcl.OK
