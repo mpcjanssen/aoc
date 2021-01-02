@@ -159,6 +159,7 @@ proc NimtCode_Cmd(clientData: Tcl.TClientData, interp: Tcl.PInterp, objc: cint, 
 
 
 proc Nimtcode_Init(interp: Tcl.PInterp): cint {.exportc,dynlib.} =
+  setupForeignThreadGc()
   discard Tcl.InitStubs(interp, "8.5",0)
   if Tcl.CreateObjCommand(interp, "NimtCode", NimtCode_Cmd, nil, nil)!=nil:
     return Tcl.OK
