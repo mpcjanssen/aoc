@@ -1,4 +1,4 @@
-tcl::tm::path add [file join [file dirname [info script]] .] {/home/mpcjanssen/Src/aoc/2019/tcl/modules/}
+tcl::tm::path add [file join [file dirname [info script]] .] {c:/Users/Mark/Src/aoc/2019/tcl/modules/}
 package require pintcode
 package require util
 
