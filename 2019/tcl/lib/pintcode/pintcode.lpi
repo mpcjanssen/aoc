@@ -15,25 +15,105 @@
       <UseAppBundle Value="False"/>
       <ResourceType Value="res"/>
     </General>
-    <BuildModes Count="1">
+    <BuildModes Count="3">
       <Item1 Name="Default" Default="True"/>
+      <Item2 Name="Debug">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="pintcode.lpr"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="fpctcl"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <Parsing>
+            <SyntaxOptions>
+              <IncludeAssertionCode Value="True"/>
+            </SyntaxOptions>
+          </Parsing>
+          <CodeGeneration>
+            <RelocatableUnit Value="True"/>
+            <Checks>
+              <IOChecks Value="True"/>
+              <RangeChecks Value="True"/>
+              <OverflowChecks Value="True"/>
+              <StackChecks Value="True"/>
+            </Checks>
+            <VerifyObjMethodCallValidity Value="True"/>
+            <TargetCPU Value="x86_64"/>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <DebugInfoType Value="dsDwarf2Set"/>
+              <UseHeaptrc Value="True"/>
+              <TrashVariables Value="True"/>
+              <UseExternalDbgSyms Value="True"/>
+            </Debugging>
+            <Options>
+              <ExecutableType Value="Library"/>
+            </Options>
+          </Linking>
+          <Other>
+            <CompilerPath Value="\usr\bin\fpc"/>
+          </Other>
+        </CompilerOptions>
+      </Item2>
+      <Item3 Name="Release">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="pintcode.lpr"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="fpctcl"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <CodeGeneration>
+            <SmartLinkUnit Value="True"/>
+            <RelocatableUnit Value="True"/>
+            <TargetCPU Value="x86_64"/>
+            <Optimizations>
+              <OptimizationLevel Value="3"/>
+            </Optimizations>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+            </Debugging>
+            <LinkSmart Value="True"/>
+            <Options>
+              <ExecutableType Value="Library"/>
+            </Options>
+          </Linking>
+          <Other>
+            <CompilerPath Value="\usr\bin\fpc"/>
+          </Other>
+        </CompilerOptions>
+      </Item3>
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
     </PublishOptions>
     <RunParams>
       <local>
-        <HostApplicationFilename Value="C:\Tcl\bin\tclsh.exe"/>
+        <HostApplicationFilename Value="\usr\bin\tclsh"/>
         <CommandLineParams Value="test.tcl"/>
-        <WorkingDirectory Value="C:\Users\Mark\Sync\Notebooks\aoc\2019\tcl\lib\fpc-tcl"/>
+        <LaunchingApplication Use="True"/>
+        <WorkingDirectory Value="\home\mpcjanssen\Src\aoc\2019\tcl\lib\pintcode"/>
       </local>
       <FormatVersion Value="2"/>
       <Modes Count="1">
         <Mode0 Name="default">
           <local>
-            <HostApplicationFilename Value="C:\Tcl\bin\tclsh.exe"/>
+            <HostApplicationFilename Value="\usr\bin\tclsh"/>
             <CommandLineParams Value="test.tcl"/>
-            <WorkingDirectory Value="C:\Users\Mark\Sync\Notebooks\aoc\2019\tcl\lib\fpc-tcl"/>
+            <LaunchingApplication Use="True"/>
+            <WorkingDirectory Value="\home\mpcjanssen\Src\aoc\2019\tcl\lib\pintcode"/>
           </local>
         </Mode0>
       </Modes>
@@ -70,12 +150,15 @@
       </Optimizations>
     </CodeGeneration>
     <Linking>
+      <Debugging>
+        <DebugInfoType Value="dsDwarf3"/>
+      </Debugging>
       <Options>
         <ExecutableType Value="Library"/>
       </Options>
     </Linking>
     <Other>
-      <CompilerPath Value="C:\Users\Mark\scoop\apps\lazarus\current\fpc\3.2.0\bin\x86_64-win64\fpc.exe"/>
+      <CompilerPath Value="\usr\bin\fpc"/>
     </Other>
   </CompilerOptions>
   <Debugging>

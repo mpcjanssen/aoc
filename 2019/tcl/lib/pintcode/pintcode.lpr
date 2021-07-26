@@ -24,7 +24,7 @@ type
   TIntCode = object
   public
     PC, Base: integer;
-    Mem: TMemory;
+    Mem: array of Integer;
     State: TStates;
     function SetMem(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint ;
     function GetMem(interp: PTcl_Interp; objc: cint; objv: PPTcl_Obj): cint ;
@@ -50,24 +50,27 @@ var
     PC:=0;
     Base:=0;
     I:=0;
-    Mem := TMemory.Create;
+    SetLength(Mem, 10000);
     for Cell in initMem.Split(',') do begin
-      Mem.AddOrSetValue(I, StrToInt(Cell));
+      Mem[I] := StrToInt(Cell);
       I +=  1;
     end;
   end;
   destructor TIntCode.Done();
   begin
-        FreeAndNil(Mem);
+        SetLength(Mem, 0);
        // WriteLn('Destroy');
   end;
 
   function TIntCode.GetValue(param: Integer; mode : TModes): integer;
+  var
+    Addr: Integer;
   begin
     Result:=0;
     case mode of
          modPos, modRel: begin
-           Result := Mem[GetAddress(param,mode)];
+           Addr := GetAddress(param,mode);
+           Result := Mem[Addr];
          end;
          modImm: Result := param;
     end;
@@ -100,7 +103,7 @@ var
        Tcl_GetLongFromObj(interp, objv[3], @val);
        //WriteLn(Format('Setting mem[%d] := %d', [idx,val]));
 
-       Mem[idx]:=val;
+       Mem[idx] := val;
        //Mem.TryGetData(idx,val);
        //WriteLn(Format('%d', [val]));
        Result:=TCL_OK;

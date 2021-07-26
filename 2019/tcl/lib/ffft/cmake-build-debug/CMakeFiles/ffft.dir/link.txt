@@ -1,0 +1,3 @@
+C:\Users\mpcjanssen\scoop\persist\jetbrains-toolbox\apps\CLion\ch-0\202.7660.37\bin\cmake\win\bin\cmake.exe -E rm -f CMakeFiles\ffft.dir/objects.a
+C:\Users\mpcjanssen\scoop\apps\msys2\2020-09-03\mingw64\bin\ar.exe cr CMakeFiles\ffft.dir/objects.a @CMakeFiles\ffft.dir\objects1.rsp
+C:\Users\mpcjanssen\scoop\apps\msys2\2020-09-03\mingw64\bin\gcc.exe  -O3 -DNDEBUG  -shared -o libffft.dll -Wl,--out-implib,libffft.dll.a -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\ffft.dir/objects.a -Wl,--no-whole-archive @CMakeFiles\ffft.dir\linklibs.rsp
