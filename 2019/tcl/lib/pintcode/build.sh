@@ -1,1 +1,1 @@
-fpc -Fufpctcl tclsampleext.lpr
+fpc -Fufpctcl pintcode.lpr

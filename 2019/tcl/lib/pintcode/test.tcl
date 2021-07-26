@@ -1,4 +1,4 @@
-tcl::tm::path add [file join [file dirname [info script]] .] {C:\Users\Mark\Sync\Notebooks\aoc\2019\tcl\modules}
+tcl::tm::path add [file join [file dirname [info script]] .] {/home/mpcjanssen/Src/aoc/2019/tcl/modules/}
 package require pintcode
 package require util
 
@@ -6,9 +6,13 @@ set program  [read-input day02]
 
 proc runwithinput {program in1 in2} {
     set machine [IntCode new $program]
+	puts 2 
     $machine setmem 1 $in1
+	puts 3 
     $machine setmem 2 $in2
+	puts 4 
     $machine run
+	puts 5 
     return [$machine mem 0]
 } 
 
@@ -36,12 +40,9 @@ proc part2 {} {
 }
 
 puts ok
-set v  [PintCode $program]
-set w  [PintCode $program]
-puts zzz$v
 
 puts part1:\t[part1]
-puts part1:\t[part2]
+puts part2:\t[part2]
 puts [time part1]
 
 puts [time part2]
