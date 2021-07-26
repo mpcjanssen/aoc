@@ -14,13 +14,11 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   SysUtils,
   ctypes,
   typinfo,
-  Generics.Collections,
   tcl;
 
 type
   TStates = (stIdle, stRunning, stInputPending, stStopped);
   TModes = (modPos = 0, modImm = 1, modRel = 2);
-  TMemory =  specialize TDictionary<Integer,Integer>;
   TIntCode = object
   public
     PC, Base: integer;
@@ -246,10 +244,10 @@ var
 
   function PintCode_Cmd(clientData: ClientData; interp: PTcl_Interp;
     objc: cint; objv: PPTcl_Obj): cint; cdecl;
+  {$push}{$warn 5024 off}
   var
     CmdName:  PChar;
     Machine: PIntCode;
-    Mem: TMemory;
   begin
     CmdName := PChar(Format('pintcode::%d',[Number]));
     //WriteLn('cmdname:' + CmdName);
@@ -265,6 +263,7 @@ var
     Tcl_SetObjResult(interp, Tcl_NewStringObj(PChar(CmdName),-1));
     Result := TCL_OK;
   end;
+  {$pop}
 
   function Pintcode_Init(interp: PTcl_Interp): cint; cdecl;
   begin

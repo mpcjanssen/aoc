@@ -90,9 +90,6 @@
               <ExecutableType Value="Library"/>
             </Options>
           </Linking>
-          <Other>
-            <CompilerPath Value="\usr\bin\fpc"/>
-          </Other>
         </CompilerOptions>
       </Item3>
     </BuildModes>
@@ -101,19 +98,19 @@
     </PublishOptions>
     <RunParams>
       <local>
-        <HostApplicationFilename Value="\usr\bin\tclsh"/>
+        <HostApplicationFilename Value="C:\Users\Mark\AppData\Local\Apps\Tcl86\bin\tclsh.exe"/>
         <CommandLineParams Value="test.tcl"/>
-        <LaunchingApplication Use="True"/>
-        <WorkingDirectory Value="\home\mpcjanssen\Src\aoc\2019\tcl\lib\pintcode"/>
+        <LaunchingApplication Use="True" PathPlusParams="C:\WINDOWS\system32\cmd.exe /K ${TargetCmdLine}"/>
+        <WorkingDirectory Value="C:\Users\Mark\Src\aoc\2019\tcl\lib\pintcode"/>
       </local>
       <FormatVersion Value="2"/>
       <Modes Count="1">
         <Mode0 Name="default">
           <local>
-            <HostApplicationFilename Value="\usr\bin\tclsh"/>
+            <HostApplicationFilename Value="C:\Users\Mark\AppData\Local\Apps\Tcl86\bin\tclsh.exe"/>
             <CommandLineParams Value="test.tcl"/>
-            <LaunchingApplication Use="True"/>
-            <WorkingDirectory Value="\home\mpcjanssen\Src\aoc\2019\tcl\lib\pintcode"/>
+            <LaunchingApplication Use="True" PathPlusParams="C:\WINDOWS\system32\cmd.exe /K ${TargetCmdLine}"/>
+            <WorkingDirectory Value="C:\Users\Mark\Src\aoc\2019\tcl\lib\pintcode"/>
           </local>
         </Mode0>
       </Modes>
@@ -157,9 +154,6 @@
         <ExecutableType Value="Library"/>
       </Options>
     </Linking>
-    <Other>
-      <CompilerPath Value="\usr\bin\fpc"/>
-    </Other>
   </CompilerOptions>
   <Debugging>
     <Exceptions Count="3">
